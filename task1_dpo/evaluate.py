@@ -21,7 +21,7 @@ from common.generation import batch_generate, response_sequence_logprobs, respon
 from common.logging_utils import load_json, save_json, set_seed
 from common.metrics import safe_corr, word_count
 from common.models import clear_gpu, load_policy, load_reward_model, load_tokenizer, reference_mode
-from task1_dpo.train import row_prompt_id
+from task1_dpo.train import filter_fitting, row_prompt_id
 
 
 def _mean(x):
@@ -50,7 +50,7 @@ def stratum_of(row: dict) -> str:
 
 
 @torch.no_grad()
-def preference_records(policy, tokenizer, rows, cfg, beta, batch_size=4):
+def preference_records(policy, tokenizer, rows, cfg, beta, batch_size=4, indices=None):
     max_len = int(cfg["max_sequence_length"])
     device = next(policy.parameters()).device
     out = []
@@ -76,7 +76,7 @@ def preference_records(policy, tokenizer, rows, cfg, beta, batch_size=4):
         for j, row in enumerate(chunk):
             margin = (pc[j] - pr[j]) - (rc[j] - rr[j])
             out.append({
-                "data_index": s + j,
+                "data_index": s + j if indices is None else indices[s + j],
                 "prompt_id": row_prompt_id(row),
                 "stratum": stratum_of(row),
                 "policy_chosen_logp": pc[j], "policy_rejected_logp": pr[j],
@@ -156,12 +156,17 @@ def evaluate_adapter(config_path, adapter, name="standard", eval_key="dpo_standa
     n_gen = int(n_gen or cfg.get("eval_generation_prompts", 200))  # optional dpo.yaml key
     results_dir = repo_path(cfg["results_dir"])
 
-    # 1) held-out preference metrics
-    records = preference_records(policy, tok, rows, cfg, beta)
+    # 1) held-out preference metrics (over-length prompts filtered, recorded by source index)
+    max_len = int(cfg["max_sequence_length"])
+    src_idx, rows_fit, skipped = filter_fitting(tok, rows, max_len)
+    records = preference_records(policy, tok, rows_fit, cfg, beta, indices=src_idx)
     write_jsonl(results_dir / f"{name}_preference_records.jsonl", records)
+    write_jsonl(results_dir / f"{name}_skipped_examples.jsonl", skipped)
 
-    # 2) generations: policy (with sampled KL) vs. reference (adapter off, cached across runs)
-    prompts = [prompt_messages_from_preference(r) for r in rows[:n_gen]]
+    # 2) generations: first n_gen prompts that fit the generation prompt budget
+    max_prompt = max_len - int(cfg["max_generation_tokens"])
+    _, gen_rows, _ = filter_fitting(tok, rows, max_prompt, max_examples=n_gen)
+    prompts = [prompt_messages_from_preference(r) for r in gen_rows]
     pol = generate_responses(policy, tok, prompts, cfg, compute_kl=True, seed=seed)
     pol_rm = score_in_batches(rm, rm_tok, prompts, pol["responses"])
 
@@ -179,6 +184,7 @@ def evaluate_adapter(config_path, adapter, name="standard", eval_key="dpo_standa
         "beta": beta,
         "seed": seed,
         "eval_file": cfg["paths"][eval_key],
+        "n_skipped_overlength": len(skipped),
         "preference": summarize_preferences(records),
         "preference_by_stratum": summarize_by_stratum(records),
         "generation": {

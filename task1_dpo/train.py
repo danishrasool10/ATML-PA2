@@ -47,17 +47,38 @@ def sha256_file(path) -> str:
     return h.hexdigest()
 
 
-class IndexedRows(Dataset):
-    """Yields (source_row_index, row) so data indices survive shuffling."""
+def filter_fitting(tokenizer, rows, max_length, max_examples=None):
+    """Drop rows whose prompt alone does not fit (the exact condition encode_prompt_response raises on).
 
-    def __init__(self, rows):
-        self.rows = rows
+    Returns (kept source indices, kept rows, skipped records). If max_examples is set, stops after
+    that many *usable* rows, so "first 600" still means 600 trainable examples.
+    """
+    kept_idx, kept_rows, skipped = [], [], []
+    for i, row in enumerate(rows):
+        n = len(tokenizer.apply_chat_template(
+            prompt_messages_from_preference(row), tokenize=True, add_generation_prompt=True
+        ))
+        if n >= max_length:
+            skipped.append({"data_index": i, "prompt_id": row_prompt_id(row), "prompt_tokens": n})
+            continue
+        kept_idx.append(i)
+        kept_rows.append(row)
+        if max_examples is not None and len(kept_rows) >= int(max_examples):
+            break
+    return kept_idx, kept_rows, skipped
+
+
+class IndexedRows(Dataset):
+    """Yields (source_file_index, row) so data indices survive filtering and shuffling."""
+
+    def __init__(self, indices, rows):
+        self.indices, self.rows = indices, rows
 
     def __len__(self):
         return len(self.rows)
 
     def __getitem__(self, i):
-        return i, self.rows[i]
+        return self.indices[i], self.rows[i]
 
 def make_collate(tokenizer, max_length):
     def collate(rows):
@@ -75,36 +96,43 @@ def make_collate(tokenizer, max_length):
 def prepare_dpo_run(config_path: str, dataset_path: str | None = None, beta: float | None = None, max_examples: int | None = None):
     cfg = load_yaml(config_path)
     seed = int(cfg["seed"])
-    set_seed(seed)
+    set_seed(seed)  # before model/LoRA init -> identical adapter init for every fork
     path = dataset_path or cfg["paths"]["dpo_standard_train"]
-    rows = read_jsonl(path)
-    if max_examples is not None:
-        rows = rows[: int(max_examples)]
+    max_len = int(cfg["max_sequence_length"])
 
     tokenizer = load_tokenizer(cfg["base_model"])
+    source_indices, rows, skipped = filter_fitting(tokenizer, read_jsonl(path), max_len, max_examples)
+    print(f"[data] {path}: kept {len(rows)} examples, skipped {len(skipped)} with prompt >= {max_len} tokens")
+
     model = load_policy(cfg, trainable=True, fresh_lora=True)
+    for p in trainable_parameters(model):  # fp32 master LoRA weights (needed for GradScaler with fp16 base)
+        p.data = p.data.float()
+
+    generator = torch.Generator().manual_seed(seed)  # data order independent of global RNG / beta
     loader = DataLoader(
-        IndexedRows(rows),
+        IndexedRows(source_indices, rows),
         batch_size=int(cfg["batch_size"]),
         shuffle=True,
-        collate_fn=make_collate(tokenizer, int(cfg["max_sequence_length"])),
+        generator=generator,
+        collate_fn=make_collate(tokenizer, max_len),
     )
     optimizer = AdamW(
         trainable_parameters(model),
         lr=float(cfg["learning_rate"]),
         weight_decay=float(cfg.get("weight_decay", 0.0)),
     )
-    effective_beta = float(cfg["beta"] if beta is None else beta)
     return {
         "cfg": cfg,
         "rows": rows,
-        "seed": seed,
-        "dataset_path": path,
+        "source_indices": source_indices,
+        "skipped": skipped,
         "tokenizer": tokenizer,
         "model": model,
         "loader": loader,
         "optimizer": optimizer,
-        "beta": effective_beta,
+        "beta": float(cfg["beta"] if beta is None else beta),
+        "seed": seed,
+        "dataset_path": path,
     }
 
 
@@ -137,8 +165,9 @@ def run_training(config_path: str, run_name: str, dataset_path: str | None = Non
     ds_file = repo_path(bundle["dataset_path"])
     write_jsonl(
         output / "data_manifest.jsonl",
-        ({"data_index": i, "prompt_id": row_prompt_id(r)} for i, r in enumerate(rows)),
+        ({"data_index": i, "prompt_id": row_prompt_id(r)} for i, r in zip(bundle["source_indices"], rows)),
     )
+    write_jsonl(output / "skipped_examples.jsonl", bundle["skipped"])
     save_json(output / "run_config.json", {
         "run_name": run_name,
         "seed": seed,
@@ -146,6 +175,7 @@ def run_training(config_path: str, run_name: str, dataset_path: str | None = Non
         "dataset_path": str(ds_file),
         "dataset_sha256": sha256_file(ds_file),
         "num_examples": len(rows),
+        "num_skipped_overlength": len(bundle["skipped"]),
         "max_examples": max_examples,
         "effective_batch_size": int(cfg["batch_size"]) * accum,
         "micro_batches_per_epoch": n_micro,
