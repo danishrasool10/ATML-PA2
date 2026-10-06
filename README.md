@@ -5,8 +5,8 @@
 ## Quick start
 
 ```bash
-git clone https://github.com/AbDu11aHHH/ATML-PA2-LLM-PostTraining.git
-cd ATML-PA2-LLM-PostTraining
+git clone https://github.com/danishrasool10/ATML-PA2.git
+cd ATML-PA2
 python -m pip install -r requirements.txt
 python -m scripts.download_assets
 python -m scripts.validate_assets
@@ -31,8 +31,8 @@ Task 4 supplies the fixed AI safety judge and response-generation utilities, but
 ## 1. Clone and install
 
 ```bash
-git clone https://github.com/COURSE_ORG/ATML-PA2-LLM-PostTraining.git
-cd ATML-PA2-LLM-PostTraining
+git clone https://github.com/danishrasool10/ATML-PA2.git
+cd ATML-PA2
 python -m pip install -r requirements.txt
 ```
 
