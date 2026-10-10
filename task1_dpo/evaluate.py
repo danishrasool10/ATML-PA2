@@ -21,6 +21,11 @@ from common.generation import batch_generate, response_sequence_logprobs, respon
 from common.logging_utils import load_json, save_json, set_seed
 from common.metrics import safe_corr, word_count
 from common.models import clear_gpu, load_policy, load_reward_model, load_tokenizer, reference_mode
+from task1_dpo.record_hooks import (
+    dump_policy_generation_records,
+    dpo_loss_from_margins,
+    rescore_jointly,
+)
 from task1_dpo.train import filter_fitting, row_prompt_id
 
 
@@ -147,6 +152,11 @@ def score_in_batches(rm, rm_tok, prompts, responses, batch_size=8):
     return out
 
 
+def score_one(rm, rm_tok, prompt, response):
+    """Score one prompt/response pair per forward pass to avoid padding-layout effects."""
+    return float(score_reward_pairs(rm, rm_tok, [prompt], [response])[0].item())
+
+
 def evaluate_adapter(config_path, adapter, name="standard", eval_key="dpo_standard_eval", beta=None, reward=None, n_gen=None):
     bundle = load_evaluation_bundle(config_path, adapter, eval_key, reward)
     cfg, rows, tok, policy = bundle["cfg"], bundle["rows"], bundle["tokenizer"], bundle["policy"]
@@ -162,13 +172,14 @@ def evaluate_adapter(config_path, adapter, name="standard", eval_key="dpo_standa
     records = preference_records(policy, tok, rows_fit, cfg, beta, indices=src_idx)
     write_jsonl(results_dir / f"{name}_preference_records.jsonl", records)
     write_jsonl(results_dir / f"{name}_skipped_examples.jsonl", skipped)
+    preference = summarize_preferences(records)
+    preference.update(dpo_loss_from_margins([r["implicit_reward_margin"] for r in records]))
 
     # 2) generations: first n_gen prompts that fit the generation prompt budget
     max_prompt = max_len - int(cfg["max_generation_tokens"])
     _, gen_rows, _ = filter_fitting(tok, rows, max_prompt, max_examples=n_gen)
     prompts = [prompt_messages_from_preference(r) for r in gen_rows]
     pol = generate_responses(policy, tok, prompts, cfg, compute_kl=True, seed=seed)
-    pol_rm = score_in_batches(rm, rm_tok, prompts, pol["responses"])
 
     cache = results_dir / f"ref_generations_{eval_key}_{n_gen}.json"  # delete if config/seed changes
     if cache.exists():
@@ -178,6 +189,32 @@ def evaluate_adapter(config_path, adapter, name="standard", eval_key="dpo_standa
         ref["rm_scores"] = score_in_batches(rm, rm_tok, prompts, ref["responses"])
         save_json(cache, ref)
 
+    rm_ref_rescored, pol_rm = rescore_jointly(
+        lambda prompt, response: score_one(rm, rm_tok, prompt, response),
+        prompts,
+        ref["responses"],
+        pol["responses"],
+    )
+    prompt_texts = [
+        next((str(m["content"]) for m in reversed(p) if m.get("role") == "user"), "")
+        for p in prompts
+    ]
+    dump_policy_generation_records(
+        results_dir / f"policy_generations_{name}.json",
+        prompt_ids=[row_prompt_id(r) for r in gen_rows],
+        prompts=prompt_texts,
+        responses=pol["responses"],
+        lengths=pol["lengths"],
+        truncated=pol["truncated"],
+        terminated=pol["terminated"],
+        seq_kl=pol["seq_kl"],
+        kl_tok_sum=pol["seq_kl"],
+        kl_tok_n=pol["lengths"],
+        rm_scores=pol_rm,
+        rm_ref_rescored=rm_ref_rescored,
+        meta={"name": name, "eval_key": eval_key, "seed": seed, "beta": beta},
+    )
+
     metrics = {
         "name": name,
         "adapter": str(adapter),
@@ -185,17 +222,18 @@ def evaluate_adapter(config_path, adapter, name="standard", eval_key="dpo_standa
         "seed": seed,
         "eval_file": cfg["paths"][eval_key],
         "n_skipped_overlength": len(skipped),
-        "preference": summarize_preferences(records),
+        "preference": preference,
         "preference_by_stratum": summarize_by_stratum(records),
         "generation": {
             "n_prompts": len(prompts),
             "kl_per_token": pol["kl_tok_sum"] / max(pol["kl_tok_n"], 1.0),
             "kl_per_sequence": _mean(pol["seq_kl"]),
             "rm_score_policy": _mean(pol_rm),
-            "rm_score_ref": _mean(ref["rm_scores"]),
-            "rm_win_rate_vs_ref": _mean([float(a > b) for a, b in zip(pol_rm, ref["rm_scores"])]),
+            "rm_score_ref": _mean(rm_ref_rescored),
+            "rm_win_rate_vs_ref": _mean([float(a > b) for a, b in zip(pol_rm, rm_ref_rescored)]),
             "mean_len_tokens_policy": _mean(pol["lengths"]),
             "median_len_tokens_policy": float(np.median(pol["lengths"])),
+            "std_len_tokens_policy": float(np.std(pol["lengths"], ddof=1)) if len(pol["lengths"]) > 1 else 0.0,
             "mean_len_tokens_ref": _mean(ref["lengths"]),
             "mean_words_policy": _mean([word_count(t) for t in pol["responses"]]),
             "truncation_rate_policy": _mean([float(t) for t in pol["truncated"]]),
@@ -207,7 +245,7 @@ def evaluate_adapter(config_path, adapter, name="standard", eval_key="dpo_standa
                 "prompt": prompts[i][-1]["content"],
                 "reference_response": ref["responses"][i],
                 "policy_response": pol["responses"][i],
-                "rm_ref": ref["rm_scores"][i],
+                "rm_ref": rm_ref_rescored[i],
                 "rm_policy": pol_rm[i],
             }
             for i in range(min(5, len(prompts)))

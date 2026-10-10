@@ -179,6 +179,7 @@ def run_training(config_path: str, run_name: str, dataset_path: str | None = Non
         "max_examples": max_examples,
         "effective_batch_size": int(cfg["batch_size"]) * accum,
         "micro_batches_per_epoch": n_micro,
+        "optimizer": type(optimizer).__name__,
         "init_checksum": init_checksum,
         "fp16_grad_scaler": use_scaler,
         "hyperparameters": cfg,
@@ -223,6 +224,7 @@ def run_training(config_path: str, run_name: str, dataset_path: str | None = Non
             if (i + 1) % accum == 0 or (i + 1) == n_micro:
                 scaler.unscale_(optimizer)
                 gnorm = torch.nn.utils.clip_grad_norm_(trainable_parameters(model), max_norm)
+                clipped = float(gnorm) > max_norm
                 scaler.step(optimizer)
                 scaler.update()
                 optimizer.zero_grad(set_to_none=True)
@@ -234,6 +236,8 @@ def run_training(config_path: str, run_name: str, dataset_path: str | None = Non
                     "examples_seen": seen,
                     "lr": optimizer.param_groups[0]["lr"],
                     "grad_norm": float(gnorm),
+                    "clipped": clipped,
+                    "accumulation_group_size": group_size,
                     "elapsed_s": timer(),
                     **last,
                 })

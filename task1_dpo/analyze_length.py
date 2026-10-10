@@ -52,6 +52,8 @@ def word_limit_analysis(config_path, adapter, name, include_reference=False):
                 "prompt_id": row_prompt_id(row),
                 "limit": limit,
                 "words": words,
+                "prompt": text,
+                "response": resp,
                 "tokens": gen["lengths"][i],
                 "truncated": gen["truncated"][i],
                 "compliant": word_limit_compliance(text, resp),

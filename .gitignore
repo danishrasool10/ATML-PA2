@@ -17,6 +17,7 @@ outputs/
 # Downloaded course assets
 cached/*
 !cached/README.md
+*.safetensors
 checkpoints/*
 !checkpoints/README.md
 manifests/*
