@@ -14,4 +14,3 @@ Typical run:
 ```bash
 python -m task2_ppo.continue_train --config configs/ppo.yaml --run-name standard
 python -m task2_ppo.evaluate --config configs/ppo.yaml --adapter outputs/task2_ppo/standard --name standard
-```
