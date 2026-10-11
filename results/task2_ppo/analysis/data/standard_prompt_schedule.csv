@@ -1,0 +1,21 @@
+update,pool_index,prompt_id,prompt_tokens,prompt_truncated_at_256,R,len,H,user_prompt_head,logged_prompt_ids,replay_matches_log
+1,66,69dbb0920f2b,133,False,0.563,512.0,1.274,Provide a comprehensive and detailed explanation of the various components that constitute a camera ,[66],True
+2,211,d17a75fdbc3c,42,False,-1.315,40.0,0.281,Guodong Wang What is the current Challenges of indigenous housing,[211],True
+3,223,8d7186b5e1fb,49,False,2.285,79.0,1.12,Which one is the correct answer regarding the number of the mouths for a phone? one or three?,[223],True
+4,141,babd2b920953,93,False,1.472,66.0,1.125,"Generate two questions that focus on the major events and individuals that shaped the political, soc",[141],True
+5,762,042952501bc0,45,False,0.826,512.0,0.539,How to open a socket between where a python script writes and a javascript script listens,[762],True
+6,934,2dcb5c70b613,382,True,0.623,59.0,1.09,"instruction: In this task, you will be given a short story. One sentence from the story is chosen. C",[934],True
+7,470,567f7fcc3da0,126,False,0.883,512.0,1.27,I would like to make a game about Latin American folklore. The idea is that you are supposed to hunt,[470],True
+8,1160,2eb050842386,163,False,1.518,14.0,0.293,"Given the task definition, example input & output, solve the new input case. You are given a sentenc",[1160],True
+9,1012,ff61e3e9c826,79,False,0.069,426.0,0.802,How can a GPT model be integrated with other machine learning methods to optimize natural language p,[1012],True
+10,1040,7757e759c2f1,125,False,2.281,398.0,0.901,Create a 10-15 minute documentary that investigates the relationship between generational trauma and,[1040],True
+11,519,8a95d5aa7533,95,False,3.062,136.0,0.862,I am planning to give a lecture about Notion for complete beginners. The length of the lecture is ab,[519],True
+12,832,82da742fa710,57,False,3.346,107.0,1.175,"Man sitting in stairs going into water, lots of boats, clear water, lost of trees and mountains. Can",[832],True
+13,325,0cade7094bf7,140,False,2.818,439.0,1.296,"I have a 5-node Proxmox cluster running at home, with ceph as the filesystem. On that cluster, I am ",[325],True
+14,727,c5324714f6da,438,True,0.67,310.0,1.504,Can you explain the details of the Vienna Voucher promotion for December 2018? Generate according to,[727],True
+15,1024,ffbe266fe771,218,False,1.63,197.0,0.491,your task is to create cold emails in the style of Alex Berman. Your first question should be to gat,[1024],True
+16,842,0066c56b827c,53,False,1.699,83.0,1.137,"Create a prompt for midjourney AI to create a realistic photograph with cyberpunk theme, a person wi",[842],True
+17,800,d1a996493125,39,False,1.907,475.0,0.958,show me example of code of a lifetime in rust,[800],True
+18,1066,d51cf37f668f,315,True,-2.176,60.0,2.673,hi. i work at eeki as a marketing manager.  About eeki: Eeki Foods’ vision is a world where pesticid,[1066],True
+19,1139,ab72a67ba77d,285,True,0.042,145.0,1.26,"Teacher:Given a sentence in the Lao, provide an equivalent translation in Japanese that retains the ",[1139],True
+20,706,e2746437d8fd,503,True,1.543,240.0,0.784,"Detailed Instructions: For the given English description, write an SQL command such that it accompli",[706],True

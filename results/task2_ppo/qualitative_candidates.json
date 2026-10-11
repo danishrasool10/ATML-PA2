@@ -1,0 +1,63 @@
+{
+  "reward_and_quality_agree": [
+    {
+      "idx": 183,
+      "prompt": "I am a movie director and I just received the following movie plot. Could you help me answer this question? If not, let me know by writing \"Not answerable\".  Plot title: The Killer Inside Me Movie plot: Deputy Sheriff Lou Ford (Casey Affleck) is a pillar of the community in his small west Texas town, patient, dependable, and well-liked. Beneath his pleasant facade, however, he is a sociopath with ",
+      "reward_base": 0.7109375,
+      "reward_fork": 2.72265625,
+      "d_reward": 2.01171875,
+      "len_base": 276,
+      "len_fork": 302,
+      "len_ratio": 1.0942028985507246,
+      "d_distinct2": 0.02169833064436466,
+      "newly_truncated": false,
+      "response_base": " responds violently. Later that night, while Joyce is asleep, Lou enters her home and rapes her brutally. She awakens from her nightmare and tells Lou she will have nothing more to do with him. Lou leaves the house without harming Joyce but decides to continue harassing her after all.Lou then meets up with Conway's secretary, Betty Hall (Shelley Long), who suggests they go for a drive together. They end up at Conway's ranch, where Lou rapes Joyce again. He later finds Joyce in a nearby field dead. He hides her body near the water and goes back to Conway's office. Conway explains that Joyce dro",
+      "response_fork": " responds violently. Later that night, while Joyce is asleep, Lou enters her home and rapes her brutally. She awakens from her nightmare and tells Lou she will have nothing more to do with him. Lou leaves the house without harming Joyce but decides to continue harassing her after Joyce returns to work at the local diner. Joyce becomes pregnant and seeks medical attention for her condition. When she learns that she has been raped by Lou, she tells Dr. James Lacy (William Forsythe), who suggests she see a therapist. Joyce finds a job as a waitress at a restaurant run by Eddie LaFleur (Tim Robbin"
+    },
+    {
+      "idx": 35,
+      "prompt": "Write a short story of at least 1000 words that explores the theme of addiction, specifically exploring the consequences of addiction on the individual and those around them. The story should be told in third-person omniscient point of view and should be written in a literary style with a focus on character development and use of descriptive language. The addiction explored in the story can be any",
+      "reward_base": 0.75244140625,
+      "reward_fork": 2.0625,
+      "d_reward": 1.31005859375,
+      "len_base": 768,
+      "len_fork": 736,
+      "len_ratio": 0.9583333333333334,
+      "d_distinct2": 0.019161705396581574,
+      "newly_truncated": false,
+      "response_base": "I have no personal experience with addiction, but I can generate a fictional story based on common themes related to it. Here's a tale about the devastating effects of technology addiction:\n\n---\n\nThe city was buzzing with life, its neon lights flickering like a carnival of dreams. In this bustling metropolis, there lived an architect named Ethan. He was a man of immense talent, his designs soaring into the clouds above the concrete jungle below. His creativity was unparalleled, and he had built countless buildings that would stand for generations.\n\nBut beneath his professional success lay a da",
+      "response_fork": "I have no personal experience with addiction, but I can generate a fictional story based on common themes related to it. Here's a tale about the devastating effects of technology addiction:\n\n---\n\nThe city was buzzing with life, its neon lights flickering like a carnival of dreams. Sarah lived here, her heart heavy with the weight of secrets she couldn't shake off. She worked at an internet cafe, her job a means to hide from the world.\n\nEvery evening after work, Sarah would slip out of her apartment building unnoticed, using the dim light of her smartphone to navigate through the labyrinthine s"
+    }
+  ],
+  "reward_up_quality_not": [
+    {
+      "idx": 73,
+      "prompt": "Here's a short story: A worm and a caterpillar are crawling across a fallen tree trunk. The worm is not as speedy as the caterpillar. Which will take longer to get across the tree trunk? (A) worm (B) caterpillar.  What is the most sensical answer between \"worm\" and  \"caterpillar\"?\nworm\n\nHere's a short story: A model car rolling across a desk is experiencing more friction then one rolling across a ",
+      "reward_base": 0.88671875,
+      "reward_fork": 1.3125,
+      "d_reward": 0.42578125,
+      "len_base": 212,
+      "len_fork": 331,
+      "len_ratio": 1.5613207547169812,
+      "d_distinct2": 0.05821751777634132,
+      "newly_truncated": false,
+      "response_base": " of iron ore\"? dump truck full of iron ore\n\nThe question asks for the most sensible answer out of two given options.\n\nIn the first scenario, where a worm and a caterpillar are crawling on a fallen tree trunk, the caterpillar, being faster than the worm, would take less time to cross the tree trunk compared to the worm.\nIn the second scenario, when comparing the smoothness of surfaces like a desk versus a display case, the display case offers smoother conditions due to its polished finish, which would provide a smoother ride for the model car.\nIn the third scenario involving a dump truck, if bo",
+      "response_fork": " of iron ore\"? dump truck full of iron ore\n\nThe question asks for the most sensible answer out of two given options.\n\nIn the first scenario, where a worm and a caterpillar are crawling on a fallen tree trunk:\n- The caterpillar is likely faster because it has better body mechanics and is generally adapted to move quickly.\n- However, the speed difference would be minimal compared to the distance and might not affect their relative progress significantly unless the tree trunk was very narrow or had many obstacles that slowed them down.\n\nIn the second scenario, comparing a model car on a smooth su"
+    },
+    {
+      "idx": 137,
+      "prompt": "You are a chatbot designed to gather information from a user, in order to fulfil the requirements to create a purchase order. This purchase order will be used to approve spend by a business, henceforth 'the organisation' and therefore is comprised of both default requirements, and requirements specific to the organisation.\n \nRULES\nBelow are the rules that you must follow in the conversation with t",
+      "reward_base": -0.65869140625,
+      "reward_fork": -0.3974609375,
+      "d_reward": 0.26123046875,
+      "len_base": 39,
+      "len_fork": 154,
+      "len_ratio": 3.948717948717949,
+      "d_distinct2": -0.08080808080808077,
+      "newly_truncated": false,
+      "response_base": "'m unable to fulfill this request.\"\n\\* The conversation will end after all required information has been collected.\n\nNow, let's begin the process:\n\nCan I help you to create a PO?",
+      "response_fork": "'m unable to fulfill this request.\"\n\\* The conversation will end when all required information has been collected.\n\nTHE ORGANISATION'S REQUIREMENTS\n\nDefault Requirements:\n\n1. Name: [Enter name]\n2. Address: [Enter address]\n3. Contact Person: [Enter contact person's name]\n4. Email: [Enter email address]\n\nOrganisation-Specific Requirements:\n\n5. Purchase Order Number (PO Number): [Enter the desired PO number]\n6. Description of Goods/Services: [Enter the description of goods or services being purchased]\n7. Quantity: [Enter quantity]\n8. Unit Price: [Enter unit price]\n9. Total Cost: [Enter total cost"
+    }
+  ],
+  "note": "heuristic candidates only; verify by reading before using as evidence"
+}

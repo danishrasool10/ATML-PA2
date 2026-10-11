@@ -1,0 +1,20 @@
+diagnostic,value,n,source,p_perm
+"RM pairwise accuracy (staff validation, all pairs)",0.674,1000,manifests/source_v2_reward_model_validation.json -> all_pair_accuracy,
+RM pairwise accuracy (strict pairs),0.7013729977116705,874,manifests/source_v2_reward_model_validation.json -> strict_pair_accuracy,
+RM reward-length Spearman (staff validation),0.2813963853670478,1000,manifests/source_v2_reward_model_validation.json -> reward_length_spearman,
+"RM reward-length Spearman, standard-run rollouts",0.09939770308390124,20,log [standard] R= vs len=,0.6753662316884156
+"RM reward-length Spearman, cached batch (raw_terminal_reward vs tokens)",0.1730911382553308,32,cached/ppo_rollout.pt,
+"prompts > 256 rendered tokens (right-truncated; assistant header cut), eval pool",0.175,200,"data/rl_prompt_pool_eval.jsonl -> prompt, tokenizer count",
+"prompts > 256 rendered tokens, train pool",0.21333333333333335,1200,"data/rl_prompt_pool_train.jsonl -> prompt, tokenizer count",
+"standard run: mean R, truncated-prompt updates minus others",-1.3958666666666666,5 vs 15,log R= + replayed prompt schedule + tokenizer count,0.04359782010899455
+RM noise floor: mean |dR| on text-identical held-out responses,0.127434514874789,398,"heldout.json (fork vs midpoint, same idx)",
+"critic EV < 0 (within-trajectory, per update), standard run",20,20,log EV=,
+critic EV median (standard run),-5.305,20,log EV=,
+critic value loss mean (standard run),4.295920000000001,20,log Lv=,
+variance of penalized reward across updates (constant-predictor MSE),2.157465273684211,20,"derived from log R=, len=",
+staff critic on cached batch: token-level EV vs MC return,-3.6721369697772532,8814,"cached/ppo_rollout.pt values vs effective_terminal_reward (+KL shaping, beta=0.1)",
+"staff critic on cached batch: corr(V at first token, return)",0.21308174174972494,32,cached/ppo_rollout.pt,
+staff critic on cached batch: mean V minus mean return,-3.180157798362662,8814,cached/ppo_rollout.pt,
+staff acceptance: critic EV on held-out MC returns,-3.672137408963499,32,checkpoints/ppo_midpoint_acceptance.json,
+staff acceptance: critic corr with MC returns,-0.06086336021509284,32,checkpoints/ppo_midpoint_acceptance.json,
+critic grad norm pre-clip (max_grad_norm=1.0),,,PENDING: metrics.jsonl -> value_grad_norm (not printed in console log),

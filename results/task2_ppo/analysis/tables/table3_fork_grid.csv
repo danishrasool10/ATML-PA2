@@ -1,0 +1,6 @@
+run,eps,beta,cached_affected_frac_INVALID,cached_active_frac_INVALID,cached_L_clip_INVALID,train_clip_frac_nominal,train_clip_frac_active,updates_with_any_clipping,max_abs_rho_minus_1,grad_norm_cv,grad_norm_cv_source,approx_kl_step_max,skipped_steps,heldout_reward,d_reward_vs_mid,heldout_kl_seq,heldout_len,train_wall_s,peak_vram_alloc_gib,peak_vram_res_gib
+fork_eps0.05_beta0.1,0.05,0.1,0.55366,0.26866,-0.09573,0.0,0.0,0,0.031137466430664062,0.8763880451423419,summary.json stability,0.0006345411529764533,0,1.5347,0.0018,,294.87,92.1,6.23,6.47
+fork_eps0.2_beta0.1,0.2,0.1,0.33787,0.16122,-0.07349,0.0,0.0,0,0.031137466430664062,0.8763880451423419,summary.json stability,0.0006345411529764533,0,1.5347,0.0018,-0.0117,294.87,95.0,6.23,6.49
+fork_eps0.5_beta0.1,0.5,0.1,0.17801,0.08282,-0.04935,0.0,0.0,0,0.031137466430664062,0.8763880451423419,summary.json stability,0.0006345411529764533,0,1.5347,0.0018,,294.87,92.5,6.23,6.49
+fork_eps0.2_beta0,0.2,0.0,0.33787,0.16122,-0.07349,0.0,0.0,0,0.02738708257675171,0.8294313399963997,summary.json stability,0.0007300589932128787,0,1.5515,0.0185,-0.0028,292.105,91.3,6.23,6.48
+fork_eps0.2_beta0.2,0.2,0.2,0.33787,0.16122,-0.07349,0.0,0.0,0,0.02868485450744629,0.8689670302955869,summary.json stability,0.0004095733165740967,0,1.5842,0.0513,-0.0053,301.37,88.7,6.23,6.5

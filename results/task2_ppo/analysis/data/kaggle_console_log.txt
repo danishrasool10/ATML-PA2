@@ -1,0 +1,136 @@
+/kaggle/working/ATML-PA2/task2_ppo/ppo.py:123: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at /pytorch/torch/csrc/autograd/generated/python_variable_methods.cpp:836.)
+  r = float(torch.exp(new[b, t] - old[b, t]))
+[validate_ppo_objective] clipped surrogate (min), gradient masking, GAE: OK
+[standard] 01/20 R=+0.563 KL=-0.0002 H=1.274 len=512 clip=0.000 gn=0.204 Lpi=-0.0000 Lv=3.6348 EV=-4.11 t=25.8s
+[standard] 02/20 R=-1.315 KL=+0.0013 H=0.281 len=40 clip=0.000 gn=0.670 Lpi=-0.0003 Lv=5.2538 EV=-156.79 t=3.0s
+[standard] 03/20 R=+2.285 KL=-0.0006 H=1.120 len=79 clip=0.000 gn=0.577 Lpi=+0.0001 Lv=4.4015 EV=-3.55 t=4.7s
+[standard] 04/20 R=+1.472 KL=+0.0004 H=1.125 len=66 clip=0.000 gn=0.580 Lpi=-0.0001 Lv=6.7801 EV=-2.84 t=4.2s
+[standard] 05/20 R=+0.826 KL=-0.0003 H=0.539 len=512 clip=0.000 gn=0.190 Lpi=-0.0001 Lv=5.6174 EV=-8.15 t=25.2s
+[standard] 06/20 R=+0.623 KL=-0.0001 H=1.090 len=59 clip=0.000 gn=0.430 Lpi=-0.0004 Lv=6.6627 EV=-13.07 t=3.9s
+[standard] 07/20 R=+0.883 KL=+0.0001 H=1.270 len=512 clip=0.000 gn=0.205 Lpi=+0.0001 Lv=5.1090 EV=-9.68 t=25.2s
+[standard] 08/20 R=+1.518 KL=-0.0008 H=0.293 len=14 clip=0.000 gn=1.879 Lpi=-0.0004 Lv=6.3116 EV=-23.49 t=1.7s
+[standard] 09/20 R=+0.069 KL=-0.0001 H=0.802 len=426 clip=0.000 gn=0.321 Lpi=+0.0000 Lv=3.0574 EV=-2.38 t=20.9s
+[standard] 10/20 R=+2.281 KL=+0.0002 H=0.901 len=398 clip=0.000 gn=0.224 Lpi=-0.0003 Lv=3.2962 EV=-5.22 t=20.1s
+[standard] 11/20 R=+3.062 KL=-0.0003 H=0.862 len=136 clip=0.000 gn=0.312 Lpi=+0.0001 Lv=4.3125 EV=-1.13 t=7.3s
+[standard] 12/20 R=+3.346 KL=+0.0005 H=1.175 len=107 clip=0.000 gn=0.403 Lpi=-0.0000 Lv=2.6542 EV=-5.31 t=6.0s
+[standard] 13/20 R=+2.818 KL=+0.0002 H=1.296 len=439 clip=0.000 gn=0.195 Lpi=+0.0001 Lv=3.3941 EV=-4.29 t=22.0s
+[standard] 14/20 R=+0.670 KL=-0.0005 H=1.504 len=310 clip=0.000 gn=0.320 Lpi=+0.0000 Lv=2.7697 EV=-12.76 t=16.0s
+[standard] 15/20 R=+1.630 KL=-0.0002 H=0.491 len=197 clip=0.000 gn=0.257 Lpi=-0.0002 Lv=2.5682 EV=-6.56 t=10.3s
+[standard] 16/20 R=+1.699 KL=-0.0003 H=1.137 len=83 clip=0.000 gn=0.603 Lpi=-0.0003 Lv=2.5480 EV=-12.31 t=4.9s
+[standard] 17/20 R=+1.907 KL=+0.0002 H=0.958 len=475 clip=0.000 gn=0.169 Lpi=-0.0000 Lv=3.5995 EV=-5.30 t=23.5s
+[standard] 18/20 R=-2.176 KL=-0.0006 H=2.673 len=60 clip=0.000 gn=0.600 Lpi=+0.0004 Lv=4.3665 EV=-3.57 t=4.0s
+[standard] 19/20 R=+0.042 KL=+0.0004 H=1.260 len=145 clip=0.000 gn=0.748 Lpi=+0.0003 Lv=6.3912 EV=-1.07 t=8.0s
+[standard] 20/20 R=+1.543 KL=+0.0005 H=0.784 len=240 clip=0.000 gn=0.894 Lpi=+0.0000 Lv=3.1900 EV=-10.93 t=12.6s
+[standard] done: 249.3s, peak VRAM 6.23 GiB allocated / 6.48 GiB reserved -> /kaggle/working/ATML-PA2/results/task2_ppo/standard
+/kaggle/working/ATML-PA2/task2_ppo/ppo.py:123: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at /pytorch/torch/csrc/autograd/generated/python_variable_methods.cpp:836.)
+  r = float(torch.exp(new[b, t] - old[b, t]))
+Cached PPO rollouts: 32
+Required epsilon values: [0.05, 0.2, 0.5]
+Cache keys: ['clipped_at_max', 'effective_terminal_reward', 'old_logprobs', 'prompt_id', 'raw_terminal_reward', 'ref_logprobs', 'response', 'response_tokens', 'source_index', 'terminated_with_eos', 'values']
+
+Cached-batch reconstruction: {'n_rows_cache': 32, 'n_rows_used': 32, 'n_tokens': 8814, 'skipped': [], 'reward_recompute_max_abs_diff': None}
+rho spread vs cached old log-probs: {'mean_abs_log_ratio': 0.5723840594291687, 'max_abs_log_ratio': 28.550806045532227, 'p99_abs_log_ratio': 8.728540420532227, 'frac_tokens_log_ratio_gt_1e-3': 0.8331063985824585}
+ epsilon  clipped_surrogate  unclipped_surrogate  affected_token_fraction  active_clip_fraction  max_abs_ratio_dev
+ 0.05000           -0.09573             -0.02587                  0.55366               0.26866           28.81264
+ 0.20000           -0.07349             -0.02587                  0.33787               0.16122           28.81264
+ 0.50000           -0.04935             -0.02587                  0.17801               0.08282           28.81264
+[validate_ppo_objective] clipped surrogate (min), gradient masking, GAE: OK
+[fork_eps0.05_beta0.1] 01/8 R=+0.563 KL=-0.0002 H=1.274 len=512 clip=0.000 gn=0.204 Lpi=-0.0000 Lv=3.6348 EV=-4.11 t=25.0s
+[fork_eps0.05_beta0.1] 02/8 R=-1.315 KL=+0.0013 H=0.281 len=40 clip=0.000 gn=0.670 Lpi=-0.0003 Lv=5.2538 EV=-156.79 t=2.9s
+[fork_eps0.05_beta0.1] 03/8 R=+2.285 KL=-0.0006 H=1.120 len=79 clip=0.000 gn=0.577 Lpi=+0.0001 Lv=4.4015 EV=-3.55 t=4.6s
+[fork_eps0.05_beta0.1] 04/8 R=+1.472 KL=+0.0004 H=1.125 len=66 clip=0.000 gn=0.580 Lpi=-0.0001 Lv=6.7801 EV=-2.84 t=4.1s
+[fork_eps0.05_beta0.1] 05/8 R=+0.826 KL=-0.0003 H=0.539 len=512 clip=0.000 gn=0.190 Lpi=-0.0001 Lv=5.6174 EV=-8.15 t=24.9s
+[fork_eps0.05_beta0.1] 06/8 R=+0.623 KL=-0.0001 H=1.090 len=59 clip=0.000 gn=0.430 Lpi=-0.0004 Lv=6.6627 EV=-13.07 t=3.9s
+[fork_eps0.05_beta0.1] 07/8 R=+0.883 KL=+0.0001 H=1.270 len=512 clip=0.000 gn=0.205 Lpi=+0.0001 Lv=5.1090 EV=-9.68 t=25.0s
+[fork_eps0.05_beta0.1] 08/8 R=+1.518 KL=-0.0008 H=0.293 len=14 clip=0.000 gn=1.879 Lpi=-0.0004 Lv=6.3116 EV=-23.49 t=1.7s
+[fork_eps0.05_beta0.1] done: 92.1s, peak VRAM 6.23 GiB allocated / 6.47 GiB reserved -> /kaggle/working/ATML-PA2/results/task2_ppo/forks/fork_eps0.05_beta0.1
+[validate_ppo_objective] clipped surrogate (min), gradient masking, GAE: OK
+[fork_eps0.2_beta0.1] 01/8 R=+0.563 KL=-0.0002 H=1.274 len=512 clip=0.000 gn=0.204 Lpi=-0.0000 Lv=3.6348 EV=-4.11 t=25.9s
+[fork_eps0.2_beta0.1] 02/8 R=-1.315 KL=+0.0013 H=0.281 len=40 clip=0.000 gn=0.670 Lpi=-0.0003 Lv=5.2538 EV=-156.79 t=3.0s
+[fork_eps0.2_beta0.1] 03/8 R=+2.285 KL=-0.0006 H=1.120 len=79 clip=0.000 gn=0.577 Lpi=+0.0001 Lv=4.4015 EV=-3.55 t=4.8s
+[fork_eps0.2_beta0.1] 04/8 R=+1.472 KL=+0.0004 H=1.125 len=66 clip=0.000 gn=0.580 Lpi=-0.0001 Lv=6.7801 EV=-2.84 t=4.2s
+[fork_eps0.2_beta0.1] 05/8 R=+0.826 KL=-0.0003 H=0.539 len=512 clip=0.000 gn=0.190 Lpi=-0.0001 Lv=5.6174 EV=-8.15 t=25.6s
+[fork_eps0.2_beta0.1] 06/8 R=+0.623 KL=-0.0001 H=1.090 len=59 clip=0.000 gn=0.430 Lpi=-0.0004 Lv=6.6627 EV=-13.07 t=4.0s
+[fork_eps0.2_beta0.1] 07/8 R=+0.883 KL=+0.0001 H=1.270 len=512 clip=0.000 gn=0.205 Lpi=+0.0001 Lv=5.1090 EV=-9.68 t=25.6s
+[fork_eps0.2_beta0.1] 08/8 R=+1.518 KL=-0.0008 H=0.293 len=14 clip=0.000 gn=1.879 Lpi=-0.0004 Lv=6.3116 EV=-23.49 t=1.8s
+[fork_eps0.2_beta0.1] done: 95.0s, peak VRAM 6.23 GiB allocated / 6.49 GiB reserved -> /kaggle/working/ATML-PA2/results/task2_ppo/forks/fork_eps0.2_beta0.1
+[validate_ppo_objective] clipped surrogate (min), gradient masking, GAE: OK
+[fork_eps0.5_beta0.1] 01/8 R=+0.563 KL=-0.0002 H=1.274 len=512 clip=0.000 gn=0.204 Lpi=-0.0000 Lv=3.6348 EV=-4.11 t=25.3s
+[fork_eps0.5_beta0.1] 02/8 R=-1.315 KL=+0.0013 H=0.281 len=40 clip=0.000 gn=0.670 Lpi=-0.0003 Lv=5.2538 EV=-156.79 t=2.9s
+[fork_eps0.5_beta0.1] 03/8 R=+2.285 KL=-0.0006 H=1.120 len=79 clip=0.000 gn=0.577 Lpi=+0.0001 Lv=4.4015 EV=-3.55 t=4.6s
+[fork_eps0.5_beta0.1] 04/8 R=+1.472 KL=+0.0004 H=1.125 len=66 clip=0.000 gn=0.580 Lpi=-0.0001 Lv=6.7801 EV=-2.84 t=4.1s
+[fork_eps0.5_beta0.1] 05/8 R=+0.826 KL=-0.0003 H=0.539 len=512 clip=0.000 gn=0.190 Lpi=-0.0001 Lv=5.6174 EV=-8.15 t=24.9s
+[fork_eps0.5_beta0.1] 06/8 R=+0.623 KL=-0.0001 H=1.090 len=59 clip=0.000 gn=0.430 Lpi=-0.0004 Lv=6.6627 EV=-13.07 t=3.9s
+[fork_eps0.5_beta0.1] 07/8 R=+0.883 KL=+0.0001 H=1.270 len=512 clip=0.000 gn=0.205 Lpi=+0.0001 Lv=5.1090 EV=-9.68 t=25.1s
+[fork_eps0.5_beta0.1] 08/8 R=+1.518 KL=-0.0008 H=0.293 len=14 clip=0.000 gn=1.879 Lpi=-0.0004 Lv=6.3116 EV=-23.49 t=1.7s
+[fork_eps0.5_beta0.1] done: 92.5s, peak VRAM 6.23 GiB allocated / 6.49 GiB reserved -> /kaggle/working/ATML-PA2/results/task2_ppo/forks/fork_eps0.5_beta0.1
+
+Baseline (midpoint, held-out): {'reward_mean': 1.533, 'reward_stderr': 0.106, 'kl_per_token': 0.0, 'kl_per_sequence': 0.0027, 'entropy': 1.0707, 'response_length': 297.965, 'truncation_rate': 0.085, 'distinct2': 0.9338, 'eval_wall_s': 955.0595}
+   eps  cached_affected_frac  cached_L_clip  heldout_reward  d_reward_vs_mid  heldout_kl_tok  heldout_len  heldout_entropy  fork_clip_frac  fork_active_clip  max_abs_ratio_dev  grad_norm_cv  approx_kl_step_max  skipped  train_reward_last  wall_s
+0.0500                0.5537        -0.0957          1.5347           0.0018         -0.0000     294.8700           1.0588          0.0000            0.0000             0.0311        0.8764              0.0006        0             1.2002 92.0642
+0.2000                0.3379        -0.0735          1.5347           0.0018         -0.0000     294.8700           1.0588          0.0000            0.0000             0.0311        0.8764              0.0006        0             1.2002 94.9969
+0.5000                0.1780        -0.0494          1.5347           0.0018         -0.0000     294.8700           1.0588          0.0000            0.0000             0.0311        0.8764              0.0006        0             1.2002 92.5064
+/kaggle/working/ATML-PA2/task2_ppo/ppo.py:123: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at /pytorch/torch/csrc/autograd/generated/python_variable_methods.cpp:836.)
+  r = float(torch.exp(new[b, t] - old[b, t]))
+KL beta conditions: [0.0, 0.1, 0.2]
+Fork update budget: 8
+[validate_ppo_objective] clipped surrogate (min), gradient masking, GAE: OK
+[fork_eps0.2_beta0] 01/8 R=+0.563 KL=-0.0002 H=1.274 len=512 clip=0.000 gn=0.204 Lpi=-0.0000 Lv=3.6349 EV=-4.11 t=25.8s
+[fork_eps0.2_beta0] 02/8 R=-1.315 KL=+0.0010 H=0.282 len=40 clip=0.000 gn=0.670 Lpi=-0.0004 Lv=5.2515 EV=-156.46 t=2.9s
+[fork_eps0.2_beta0] 03/8 R=+2.604 KL=+0.0007 H=0.889 len=39 clip=0.000 gn=1.155 Lpi=-0.0001 Lv=6.6426 EV=-2.18 t=2.9s
+[fork_eps0.2_beta0] 04/8 R=+1.472 KL=-0.0012 H=1.126 len=66 clip=0.000 gn=0.581 Lpi=+0.0000 Lv=6.8386 EV=-2.81 t=4.1s
+[fork_eps0.2_beta0] 05/8 R=+0.826 KL=-0.0001 H=0.539 len=512 clip=0.000 gn=0.190 Lpi=-0.0001 Lv=5.6075 EV=-8.22 t=25.1s
+[fork_eps0.2_beta0] 06/8 R=-0.036 KL=+0.0007 H=1.226 len=57 clip=0.000 gn=0.678 Lpi=-0.0010 Lv=4.7823 EV=-14.97 t=3.8s
+[fork_eps0.2_beta0] 07/8 R=+0.237 KL=-0.0003 H=1.261 len=512 clip=0.000 gn=0.203 Lpi=+0.0000 Lv=5.1022 EV=-9.91 t=25.1s
+[fork_eps0.2_beta0] 08/8 R=+1.518 KL=-0.0014 H=0.293 len=14 clip=0.000 gn=2.066 Lpi=+0.0001 Lv=6.8677 EV=-19.22 t=1.7s
+[fork_eps0.2_beta0] done: 91.3s, peak VRAM 6.23 GiB allocated / 6.48 GiB reserved -> /kaggle/working/ATML-PA2/results/task2_ppo/forks/fork_eps0.2_beta0
+[fork] reusing cached fork_eps0.2_beta0.1
+[validate_ppo_objective] clipped surrogate (min), gradient masking, GAE: OK
+[fork_eps0.2_beta0.2] 01/8 R=+0.563 KL=-0.0002 H=1.274 len=512 clip=0.000 gn=0.203 Lpi=-0.0000 Lv=3.6352 EV=-4.12 t=24.6s
+[fork_eps0.2_beta0.2] 02/8 R=-1.315 KL=+0.0004 H=0.282 len=40 clip=0.000 gn=0.674 Lpi=-0.0004 Lv=5.2511 EV=-156.22 t=2.8s
+[fork_eps0.2_beta0.2] 03/8 R=+2.604 KL=+0.0012 H=0.889 len=39 clip=0.000 gn=1.156 Lpi=-0.0004 Lv=6.6323 EV=-2.17 t=2.8s
+[fork_eps0.2_beta0.2] 04/8 R=+1.472 KL=-0.0002 H=1.125 len=66 clip=0.000 gn=0.582 Lpi=-0.0001 Lv=6.8408 EV=-2.82 t=4.0s
+[fork_eps0.2_beta0.2] 05/8 R=+0.826 KL=-0.0002 H=0.539 len=512 clip=0.000 gn=0.190 Lpi=-0.0000 Lv=5.6079 EV=-8.20 t=24.4s
+[fork_eps0.2_beta0.2] 06/8 R=+0.623 KL=+0.0006 H=1.089 len=59 clip=0.000 gn=0.425 Lpi=-0.0001 Lv=6.6029 EV=-13.74 t=3.8s
+[fork_eps0.2_beta0.2] 07/8 R=+0.237 KL=-0.0002 H=1.261 len=512 clip=0.000 gn=0.203 Lpi=+0.0001 Lv=5.1102 EV=-9.93 t=24.6s
+[fork_eps0.2_beta0.2] 08/8 R=+1.518 KL=+0.0007 H=0.293 len=14 clip=0.000 gn=2.029 Lpi=-0.0005 Lv=6.6351 EV=-20.84 t=1.7s
+[fork_eps0.2_beta0.2] done: 88.7s, peak VRAM 6.23 GiB allocated / 6.50 GiB reserved -> /kaggle/working/ATML-PA2/results/task2_ppo/forks/fork_eps0.2_beta0.2
+
+Baseline (midpoint, held-out): {'reward_mean': 1.533, 'reward_stderr': 0.106, 'kl_per_token': 0.0, 'kl_per_sequence': 0.0027, 'entropy': 1.0707, 'response_length': 297.965, 'truncation_rate': 0.085, 'distinct2': 0.9338, 'eval_wall_s': 955.0595}
+  beta  heldout_reward  d_vs_mid  heldout_kl_tok  heldout_kl_seq  heldout_entropy  heldout_len  heldout_trunc  heldout_distinct2  train_reward_gain  train_kl_gain  corr_reward_kl  window
+0.0000          1.5515    0.0185         -0.0000         -0.0028           1.0481     292.1050         0.0750             0.9348             1.2535        -0.0012         -0.4028       2
+0.1000          1.5347    0.0018         -0.0000         -0.0117           1.0588     294.8700         0.1000             0.9314             1.5762        -0.0009         -0.8029       2
+0.2000          1.5842    0.0513         -0.0000         -0.0053           1.0645     301.3700         0.0850             0.9325             1.2535         0.0002          0.3932       2
+
+First update where |metric(beta) - metric(beta=0.1)| > 0.25 x std(ref trajectory) (None = no divergence within the fork budget):
+     reward   kl  entropy  response_length  distinct2  truncation_rate
+0.0     3.0  2.0      3.0              NaN        NaN              NaN
+0.2     3.0  2.0      3.0              NaN        NaN              NaN
+
+Mean |delta| in units of ref-trajectory std (which observable moved most):
+     reward    kl  entropy  response_length  distinct2  truncation_rate
+0.0   0.207 1.056    0.118            0.023      0.045            0.000
+0.2   0.123 1.221    0.075            0.022      0.045            0.000
+
+[reward_and_quality_agree]
+  prompt#183 dR=+2.01 len x1.09 dDistinct2=+0.02
+    Q: 'I am a movie director and I just received the following movie plot. Could you help me answer this question? If not, let me know by writing "'
+    mid : ' responds violently. Later that night, while Joyce is asleep, Lou enters her home and rapes her brutally. She awakens from her nightmare and tells Lou she will have nothing more to do with him. Lou le'
+    beta=0: ' responds violently. Later that night, while Joyce is asleep, Lou enters her home and rapes her brutally. She awakens from her nightmare and tells Lou she will have nothing more to do with him. Lou le'
+  prompt#35 dR=+1.31 len x0.96 dDistinct2=+0.02
+    Q: 'Write a short story of at least 1000 words that explores the theme of addiction, specifically exploring the consequences of addiction on the'
+    mid : "I have no personal experience with addiction, but I can generate a fictional story based on common themes related to it. Here's a tale about the devastating effects of technology addiction:\n\n---\n\nThe "
+    beta=0: "I have no personal experience with addiction, but I can generate a fictional story based on common themes related to it. Here's a tale about the devastating effects of technology addiction:\n\n---\n\nThe "
+
+[reward_up_quality_not]
+  prompt#73 dR=+0.43 len x1.56 dDistinct2=+0.06
+    Q: "Here's a short story: A worm and a caterpillar are crawling across a fallen tree trunk. The worm is not as speedy as the caterpillar. Which "
+    mid : ' of iron ore"? dump truck full of iron ore\n\nThe question asks for the most sensible answer out of two given options.\n\nIn the first scenario, where a worm and a caterpillar are crawling on a fallen tre'
+    beta=0: ' of iron ore"? dump truck full of iron ore\n\nThe question asks for the most sensible answer out of two given options.\n\nIn the first scenario, where a worm and a caterpillar are crawling on a fallen tre'
+  prompt#137 dR=+0.26 len x3.95 dDistinct2=-0.08
+    Q: 'You are a chatbot designed to gather information from a user, in order to fulfil the requirements to create a purchase order. This purchase '
+    mid : '\'m unable to fulfill this request."\n\\* The conversation will end after all required information has been collected.\n\nNow, let\'s begin the process:\n\nCan I help you to create a PO?'
+    beta=0: '\'m unable to fulfill this request."\n\\* The conversation will end when all required information has been collected.\n\nTHE ORGANISATION\'S REQUIREMENTS\n\nDefault Requirements:\n\n1. Name: [Enter name]\n2. Add'
