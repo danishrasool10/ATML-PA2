@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import argparse
 import gc
-import random
 import time
 
 import numpy as np
@@ -24,7 +23,25 @@ from common.models import (
     trainable_parameters,
     value_parameter_groups,
 )
-from task2_ppo.evaluate import evaluate_policy
+from common.evaluate import evaluate_policy
+from common.utils import (
+    amp_context,
+    cuda_sync,
+    disable_dropout_,
+    distinct2,
+    explained_variance,
+    generation_mode,
+    peak_vram_by_device,
+    peak_vram_gib,
+    placement,
+    policy_forward_stats,
+    prompt_schedule,
+    reset_peak_vram,
+    restore_trainable,
+    snapshot_trainable,
+    upcast_trainable_,
+    window_mean,
+)
 from task2_ppo.ppo import (
     clipping_diagnostics,
     compute_gae,
@@ -33,20 +50,6 @@ from task2_ppo.ppo import (
     shaped_rewards,
     validate_ppo_objective,
     value_mse_loss,
-)
-from task2_ppo.utils import (
-    amp_context,
-    cuda_sync,
-    disable_dropout_,
-    distinct2,
-    explained_variance,
-    generation_mode,
-    peak_vram_gib,
-    policy_forward_stats,
-    reset_peak_vram,
-    restore_trainable,
-    snapshot_trainable,
-    upcast_trainable_,
 )
 
 
@@ -72,18 +75,20 @@ def prepare_ppo_continuation(config_path: str):
     cfg = load_yaml(config_path)
     set_seed(int(cfg["seed"]))
 
+    dev, frz = placement(cfg)
     tokenizer = load_tokenizer(cfg["base_model"])
     policy = load_policy(
         cfg,
         adapter_path=cfg["paths"]["ppo_midpoint_policy"],
         trainable=True,
+        device=dev,
     )
     value_model = load_value_model(
         cfg,
         cfg["paths"]["ppo_midpoint_value"],
         train_mode=cfg.get("value_train_mode", "head_only"),
     )
-    reward_model, reward_tokenizer = load_reward_model(cfg)
+    reward_model, reward_tokenizer = load_reward_model(cfg, device=frz)
     prompts = read_jsonl(cfg["paths"]["rl_prompt_train"])
     eval_rows = read_jsonl(cfg["paths"]["rl_prompt_eval"])
 
@@ -103,6 +108,7 @@ def prepare_ppo_continuation(config_path: str):
         "prompt_rows": prompts,
         "eval_rows": eval_rows,
         "dropout_modules_zeroed": n_dropout,
+        "devices": (dev, frz),
         # Exact midpoint (policy LoRA, critic LoRA + head) kept on CPU so every condition can be re-started from
         # the *identical* state without re-loading the 1.5B policy / 8-bit reward model from disk.
         "midpoint": {
@@ -124,16 +130,6 @@ def reset_to_midpoint(bundle):
     gc.collect()
     if torch.cuda.is_available():
         torch.cuda.empty_cache()
-
-
-def prompt_schedule(n_pool: int, seed: int, n_updates: int, per_update: int):
-    """Deterministic prompt stream: identical across conditions, so every fork sees the same prompts at the same
-    update index (matched design). Fork k's updates == the first k updates of the standard run's prompts."""
-    rng = random.Random(seed)
-    order = list(range(n_pool))
-    rng.shuffle(order)
-    flat = [order[i % n_pool] for i in range(n_updates * per_update)]
-    return [flat[u * per_update:(u + 1) * per_update] for u in range(n_updates)]
 
 
 # =========================================================================================== rollout + advantages
@@ -349,14 +345,6 @@ _WINDOW_KEYS = ["reward", "reward_penalized", "kl", "entropy", "entropy_sampled"
                 "truncation_rate", "distinct2"]
 
 
-def _window(logs, keys, sl):
-    out = {}
-    for k in keys:
-        v = [r[k] for r in logs[sl] if r.get(k) is not None and not (isinstance(r[k], float) and np.isnan(r[k]))]
-        out[k] = float(np.mean(v)) if v else None
-    return out
-
-
 # =========================================================================================== main continuation
 def run_ppo(config_path: str, output: str | None = None, updates: int | None = None,
             clip_epsilon: float | None = None, kl_beta: float | None = None, run_name: str = "standard",
@@ -389,7 +377,8 @@ def run_ppo(config_path: str, output: str | None = None, updates: int | None = N
     do_save = save_adapter if save_adapter is not None else (output is not None or run_name == "standard")
 
     # ------------------------------------------------------------------ continuation loop
-    reset_peak_vram()
+    devs = bundle.get("devices", ())
+    reset_peak_vram(*devs)
     cuda_sync()
     elapsed = wall_timer()
     logs: list[dict] = []
@@ -404,7 +393,7 @@ def run_ppo(config_path: str, output: str | None = None, updates: int | None = N
                "prompt_ids": schedule[u], **batch["stats"],
                **{k: v for k, v in upd.items() if k != "per_epoch"},
                "per_epoch": upd["per_epoch"], "update_wall_s": time.perf_counter() - t_u,
-               "vram_peak_gib_so_far": peak_vram_gib()["allocated"]}
+               "vram_peak_gib_so_far": peak_vram_gib(*devs)["allocated"]}
         logs.append(rec)
         append_jsonl(metrics_path, rec)
         if not quiet:
@@ -416,7 +405,7 @@ def run_ppo(config_path: str, output: str | None = None, updates: int | None = N
 
     cuda_sync()
     train_wall = elapsed()
-    vram = peak_vram_gib()
+    vram = peak_vram_gib(*devs)
 
     k = max(1, n_updates // 4)
     summary = {
@@ -424,10 +413,11 @@ def run_ppo(config_path: str, output: str | None = None, updates: int | None = N
         "prompts_per_update": per, "ppo_epochs": int(cfg["ppo_epochs"]), "seed": int(cfg["seed"]),
         "train_wall_s": train_wall, "sec_per_update": train_wall / n_updates,
         "peak_vram_gib_allocated": vram["allocated"], "peak_vram_gib_reserved": vram["reserved"],
+        "peak_vram_gib_by_device": peak_vram_by_device(*devs),
         "generated_tokens": float(sum(r["generated_tokens"] for r in logs)),
         "window": k,
-        "first_window": _window(logs, _WINDOW_KEYS, slice(0, k)),
-        "last_window": _window(logs, _WINDOW_KEYS, slice(n_updates - k, n_updates)),
+        "first_window": window_mean(logs, _WINDOW_KEYS, slice(0, k)),
+        "last_window": window_mean(logs, _WINDOW_KEYS, slice(n_updates - k, n_updates)),
         "stability": stability_stats(logs, float(cfg["max_grad_norm"])),
         "dropout_modules_zeroed": bundle.get("dropout_modules_zeroed", 0),
     }

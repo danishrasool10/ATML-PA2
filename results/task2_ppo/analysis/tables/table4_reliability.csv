@@ -7,7 +7,7 @@ RM reward-length Spearman (staff validation),0.2813963853670478,1000,manifests/s
 "prompts > 256 rendered tokens (right-truncated; assistant header cut), eval pool",0.175,200,"data/rl_prompt_pool_eval.jsonl -> prompt, tokenizer count",
 "prompts > 256 rendered tokens, train pool",0.21333333333333335,1200,"data/rl_prompt_pool_train.jsonl -> prompt, tokenizer count",
 "standard run: mean R, truncated-prompt updates minus others",-1.3958666666666666,5 vs 15,log R= + replayed prompt schedule + tokenizer count,0.04359782010899455
-RM noise floor: mean |dR| on text-identical held-out responses,0.127434514874789,398,"heldout.json (fork vs midpoint, same idx)",
+RM noise floor: mean |dR| on text-identical held-out responses,0.12561993198540375,524,"heldout.json (fork vs midpoint, same idx)",
 "critic EV < 0 (within-trajectory, per update), standard run",20,20,log EV=,
 critic EV median (standard run),-5.305,20,log EV=,
 critic value loss mean (standard run),4.295920000000001,20,log Lv=,

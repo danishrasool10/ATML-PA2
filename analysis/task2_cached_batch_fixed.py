@@ -39,7 +39,7 @@ from task2_ppo.analyze_clipping import (
     static_clip_table,
 )
 from task2_ppo.continue_train import prepare_ppo_continuation, reset_to_midpoint
-from task2_ppo.utils import policy_forward_stats
+from common.utils import policy_forward_stats
 
 
 def _affected(log_ratio: torch.Tensor, eps: float) -> float:

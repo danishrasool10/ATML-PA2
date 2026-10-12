@@ -18,7 +18,7 @@ from task2_ppo.continue_train import (
     run_fork,
 )
 from task2_ppo.ppo import clipping_diagnostics, ppo_policy_loss
-from task2_ppo.utils import policy_forward_stats
+from common.utils import policy_forward_stats
 
 _REWARD_KEYS = ["reward", "task_reward", "rm_reward", "reward_score", "score"]
 

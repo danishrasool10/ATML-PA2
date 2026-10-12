@@ -9,6 +9,7 @@
       "clipping_study.json",
       "kl_study.json",
       "qualitative_candidates.json",
+      "standard_heldout.json",
       "forks/fork_eps0.05_beta0.1/metrics.jsonl",
       "forks/fork_eps0.05_beta0.1/summary.json",
       "forks/fork_eps0.05_beta0.1/heldout.json",
@@ -25,9 +26,7 @@
       "forks/fork_eps0.2_beta0.2/summary.json",
       "forks/fork_eps0.2_beta0.2/heldout.json"
     ],
-    "missing": [
-      "standard_heldout.json"
-    ]
+    "missing": []
   },
   "validate_ppo_objective_ok_count": 6,
   "reused_forks": [
@@ -582,12 +581,13 @@
     "frac_text_identical_to_midpoint": {
       "fork_eps0.2_beta0": 0.67,
       "fork_eps0.2_beta0.1": 0.665,
-      "fork_eps0.2_beta0.2": 0.655
+      "fork_eps0.2_beta0.2": 0.655,
+      "standard": 0.63
     },
-    "rm_noise_floor_mean_abs_dR_identical_text": 0.127434514874789,
-    "rm_noise_floor_p95": 0.3131286621093746,
-    "rm_noise_floor_n_pairs": 398,
-    "rm_noise_floor_frac_exactly_zero": 0.002512562814070352
+    "rm_noise_floor_mean_abs_dR_identical_text": 0.12561993198540375,
+    "rm_noise_floor_p95": 0.31967773437499963,
+    "rm_noise_floor_n_pairs": 524,
+    "rm_noise_floor_frac_exactly_zero": 0.0019083969465648854
   },
   "examples_dumped_idx": [
     183,

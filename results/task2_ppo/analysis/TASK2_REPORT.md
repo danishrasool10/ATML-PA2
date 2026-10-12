@@ -2,7 +2,7 @@
 
 *Rerun on Kaggle (fp16, seed 6304). Analysis written 2026-10-12. Where each number comes from: `log` = `data/kaggle_console_log.txt` (the console output of the rerun, copied verbatim into this folder); `cache` = `cached/ppo_rollout.pt`; `pool` = `data/rl_prompt_pool_{train,eval}.jsonl`; `staff` = `checkpoints/ppo_midpoint_acceptance.json` / `manifests/source_v2_reward_model_validation.json`. All statistics were computed by `analysis/task2_report_stats.py`; the generated numbers are in `tables.md`, `tables/*.csv` and `stats.json`.*
 
-> **Status (updated after the Kaggle `results/task2_ppo/` folder arrived).** All 22 expected result files are present and were used (`stats.json → json_artifacts`); the only absent file is `standard_heldout.json` (the standard adapter was never evaluated → **PENDING**). The replayed prompt schedule matches the logged `prompt_ids` in 20/20 updates. Still open: the **cached-batch clipping table produced by the rerun is invalid** (§A.2) and needs one short GPU run of `analysis/task2_cached_batch_fixed.py`.
+> **Status (updated after the Kaggle `results/task2_ppo/` folder arrived).** All 22 expected result files are present and were used (`stats.json → json_artifacts`); `standard_heldout.json` was added from a second Kaggle session (2026-10-12; adapter regenerated with `continue_train` in that session, then `task2_ppo.evaluate`). The replayed prompt schedule matches the logged `prompt_ids` in 20/20 updates. The corrected cached-batch measurement was run afterwards on Colab (`clipping_cached_batch_fixed.json`, §B RQ1). Nothing is pending except the caveat on the regenerated standard adapter (§A.1).
 
 ---
 
@@ -15,7 +15,7 @@
 ### A.1 Completeness of the results bundle
 * **Present (22 files):** `standard/{metrics.jsonl,summary.json}`; `forks/{5 forks}/{metrics.jsonl,summary.json,heldout.json}`; `forks/midpoint_baseline_heldout.json`; `clipping_cached_batch.json` (probe empty, see §A.2), `clipping_study.json`, `kl_study.json`, `qualitative_candidates.json`; plus `outputs/task2_ppo/standard/` (policy adapter + `value_state/`). Every value printed in the console log matches these files.
 * **Runs present in the log.** standard (20 updates); forks (ε, β) = (0.05, 0.1), (0.2, 0.1), (0.5, 0.1), (0.2, 0), (0.2, 0.2) at 8 updates each; the midpoint baseline (200 held-out prompts). The (0.2, 0.1) fork was reused by the KL study (`log: "[fork] reusing cached fork_eps0.2_beta0.1"`). `validate_ppo_objective` passed in all 6 training invocations (`log`, 6 × "OK").
-* **Missing:** `standard_heldout.json` — the 20-update standard adapter was never evaluated on held-out prompts → **PENDING** (command in §F).
+* **Added later:** `standard_heldout.json` (second Kaggle session). Caveat: that session regenerated the standard adapter by re-running `continue_train` rather than reusing the original files; the earlier runs reproduced bit-for-bit, but the retrain log was not saved, so identity with the original adapter is assumed, not verified.
 
 ### A.2 Discrepancies with the brief
 1. **The cached-batch clipping table is invalid: the wrong prompts were used.** `reconstruct_cached_batch` looks each prompt up as `rl_prompt_pool_train[source_index]` (analyze_clipping.py, line 83). The cache's 32 rows are actually **rows 0–31 of the *eval* pool**:
@@ -25,7 +25,7 @@
    * Example: cached row 0 answers *"Claim: 'One can find Sarah Jessica Parker on the show The Sopranos'…"* but was scored under train prompt 124, *"What were the primary causes and consequences of World War I…"* (`data/cache_audit.csv`).
 
    That mismatch explains everything odd in the rerun's table: a mean |log ρ| of 0.572, a max of 28.55, 83% of tokens with |log ρ| > 1e-3, and affected fractions of 0.554 / 0.338 / 0.178 (`log → rho spread…`, static table). Two built-in safeguards could not fire. The reward check found no cached reward (`_REWARD_KEYS` omits `raw_terminal_reward`, hence `reward_recompute_max_abs_diff: None`). The probe was skipped because the mismatch made the batch look "non-degenerate". The response side is fine: re-tokenizing the cached text reproduces the cached log-prob length in 32/32 rows (24 with EOS appended, 8 at exactly 512 tokens). **Fix without editing task2_ppo:** `analysis/task2_cached_batch_fixed.py` (§F). The direct fix in analyze_clipping.py would be to look the prompt up by `prompt_id` in `rl_prompt_pool_eval`, and to add `"raw_terminal_reward"` to `_REWARD_KEYS`.
-2. **The TA's "≈0 by construction" is only approximately true even with the right prompts.** The cache stores two independently computed log-prob columns for (presumably) the same near-reference policy. They differ by a mean |Δ| of 0.0184 nats (RMS 0.0375, p99 0.130, max 0.343), with 49.6% positive differences. That is symmetric noise, and it grows as token confidence falls: 0.054 for p<0.1 down to 1e-4 for p>0.99. Critic values in the cache are bf16-quantized (e.g. −1.421875, −3.546875), so the staff probably worked in bf16. Using these two columns as a proxy for the cross-environment noise gives an expected **zero-baseline affected fraction of 13.7% at ε=0.05, 0.18% at ε=0.20 and 0.00% at ε=0.50** (`stats.json → cache_audit.proxy_affected_fraction_numerical_floor`). *Hypothesis*: confirm it with the reference-only noise floor that `task2_cached_batch_fixed.py` measures.
+2. **Corrected measurement (Colab, `results/task2_ppo/clipping_cached_batch_fixed.json`, via `analysis/task2_cached_batch_fixed.py`).** With prompts matched by `prompt_id`, the mean |log ρ| falls from 0.572 to **0.0257** (p99 0.160; 63.6% of tokens > 1e-3). The frozen reference recomputed on the same batch differs from the cached reference column by almost exactly the same amount: mean |Δ| **0.0263**, p99 0.164, max 3.65 (`ref_numerical_floor`). Mean |log ρ| minus that floor is −0.0006, i.e. **the whole ρ deviation is cross-environment numerics (staff bf16 vs our fp16), not policy difference**, confirming the TA that the cache was generated by the midpoint. Recomputed critic values match the cached ones (mean |Δ| 0.097); the RM re-score differs by up to 1.30 on one row (`reward_recompute_max_abs_diff`; 8-bit RM + batch padding), consistent with the RM noise floor. My earlier proxy (0.137 / 0.002 / 0.000) was the right order of magnitude.
 3. **The cache is the staff's critic-acceptance batch (512-token cap).** Recomputing the staff critic's diagnostics from the cache with G_t = effective reward − 0.1·Σ_{t'≥t}(log π_old − log π_ref) reproduces all three staff numbers exactly: EV = −3.67214 (staff −3.672137), token-level corr(V, G) = −0.06086 (staff −0.060863) and std(V) = 2.7539 (staff 2.75393). 8/32 rows hit the 512 cap.
 4. **Earlier findings re-checked against the rerun — all confirmed.** Determinism (standard updates 1–8 = (0.2, 0.1) fork); held-out β deltas +0.0185 / +0.0018 / +0.0513 (first bundle +0.019 / +0.002 / +0.051); ε forks bit-identical; standard-run max |ρ−1| = 0.0778, reached only at update 20; RM noise floor 0.127 (first bundle ≈0.12); reward–length Spearman 0.343 (≈0.34); 14.5% of midpoint responses start mid-sentence (≈15%); idx 72 and idx 178 still exist with the same behaviour (§D).
 
@@ -36,7 +36,8 @@
 ### RQ1 — How does ε change the fraction of updates constrained by clipping, and the stability of the short continuation?
 
 **Measured.**
-* **Baseline (TA framing).** At the midpoint the cached-batch affected fraction should be ≈0. The rerun's numbers (0.554 / 0.338 / 0.178) come from mismatched prompts (§A.2.1) and are not evidence. The expected floor, as a proxy, is 0.137 / 0.002 / 0.000 for ε = 0.05 / 0.20 / 0.50 (§A.2.2). The corrected measurement is **PENDING**.
+* **Baseline (TA framing), measured on the corrected cached batch** (`clipping_cached_batch_fixed.json → static`): affected-token fraction **0.108 / 0.0085 / 0.0056** for ε = 0.05 / 0.20 / 0.50 (active, gradient-zeroed: 0.052 / 0.0039 / 0.0026); clipped surrogate −0.0096 / −0.0082 / −0.0078 vs unclipped −0.0048. The noise-only fraction from the reference recomputation is **0.112 / 0.0084 / 0.0057** — indistinguishable — so the nonzero baseline is a numerical floor, larger the narrower ε is, and is ≈0 for ε ≥ 0.2 as the TA said. The single max |ρ−1| = 31.7 is one token whose *reference* log-prob also moves by 3.65 nats between environments (same numerical outlier). The buggy rerun's 0.554 / 0.338 / 0.178 came from mismatched prompts (§A.2.1).
+* **Probe (4 PPO optimizer steps on the cached batch from the midpoint, per ε):** the clip fraction barely moves — 0.108 → 0.106 (ε 0.05), 0.0085 → 0.0083 (0.20), 0.0056 constant (0.50); approx-KL per step 4–11e-5. Even on a 32-response batch, the prescribed LR moves the policy far less than the numerical floor, the same mechanism that makes ε inert in the forks.
 * **Matched continuation: ε never binds.** Across all three 8-update forks:
   * The nominal and active clip fractions are 0.0000 in every update: 0/8 updates with any clipping, for every ε (`log → eps table: fork_clip_frac, fork_active_clip`; per-update `clip=0.000`).
   * The primary stability statistic, max |ρ−1| over all tokens, epochs and updates, is **0.0311 for all three ε**, below the narrowest band (0.05).
@@ -84,6 +85,7 @@ With `ablate_kl`'s own threshold (|Δ| > 0.25 SD of the reference trajectory): K
 * Forks: Δ = +0.0185 [−0.072, +0.110] (β = 0), +0.0018 [−0.055, +0.068] (β = 0.1), +0.0513 [−0.040, +0.144] (β = 0.2): paired bootstrap 95% CIs over the 200 prompts (2000 resamples, seed 6304); all include 0. 65.5–67% of fork responses are text-identical to the midpoint's (common random numbers + near-zero policy change), which is why the paired CIs are ~3× narrower than unpaired ones.
 * Drift: KL to reference per token (KL/seq ÷ length) is +9.1e-6 (midpoint), −9.6e-6, −4.0e-5 and −1.8e-5. |KL/seq| ≤ 0.012 nats: zero within the k1 estimator's resolution.
 * Entropy −0.006 to −0.023 nats/token vs midpoint; length −5.9 to +3.4 tokens; truncation 7.5–10.0% vs 8.5%; distinct-2 0.931–0.935 vs 0.934.
+* **Standard 20-update run, held-out:** reward 1.567 ± 0.102, Δ vs midpoint **+0.034 [−0.034, +0.106]** (paired bootstrap); KL/seq −0.0045 nats (−1.5e-5/token); entropy 1.0566; length 297.7; truncation 7.5%; distinct-2 0.9315. 126/200 responses are text-identical to the midpoint's; of the rest, 26 prompts gain and 21 lose more than 0.3 reward. So 2.5× the update budget still produces no detectable change in reward or drift.
 * Training reward (standard run): first-10 mean 0.921 vs last-10 1.454 (Δ +0.53, permutation p = 0.40; Spearman vs update 0.13, p = 0.57). With one different prompt per update this measures prompt difficulty, not learning.
 
 **The midpoint itself is essentially the reference.** All four supplied adapters have tiny LoRA updates: ‖2·BA‖_F is about 2.7e-3 per projection for PPO, against 2.2e-3 to 2.9e-3 for GRPO, RLVR and RLAIF. The staff-logged KLs of the other adapters are 3e-4 to 6e-4. So "drift" never starts.
@@ -103,7 +105,7 @@ With `ablate_kl`'s own threshold (|Δ| > 0.25 SD of the reference trajectory): K
 * **Trend.** Value loss falls from 5.01 to 3.58 (first-10 vs last-10, permutation p = 0.025; Spearman −0.46, p = 0.040). This is nominal only: not significant after correcting for the 12 metrics tested.
 * **Critic gradient norm.** Pre-clip critic grad norm 36.3–287.1 (median ≈ 88) across the 20 standard updates vs `max_grad_norm` 1.0, i.e. clipped by 36–287× in 20/20 updates (`metrics.jsonl → value_grad_norm`). With Adam the clipping mostly rescales m/v, but it confirms the critic targets are far from its predictions.
 
-**Verdict.** **No evidence of reward over-optimization, because the policy never drifted.** Held-out reward, KL, length and distinct-2 are unchanged within noise after 8 (and 20) updates. The over-optimization regime (reward up, KL up, quality down) was not reached, so these runs cannot say how informative the reward becomes *as the policy drifts*: that is an honest null, not evidence that the reward model is robust. What the data do show is that the reward is a noisy signal at the per-sample level. It has modest pairwise accuracy (0.67) and a length bias (ρ ≈ 0.28). It is confounded by prompt truncation (a −1.4 reward gap in the training run). It is paired with a critic that is worse than a constant baseline, so the advantages are dominated by the terminal reward and critic noise. Under stronger optimization, these properties (length bias and continuation artefacts) are the ones to expect the policy to exploit first. *That is a hypothesis.*
+**Verdict.** **No evidence of reward over-optimization, because the policy never drifted.** Held-out reward, KL, length and distinct-2 are unchanged within noise after 8 updates (forks) and after 20 updates (standard run: Δ +0.034, CI includes 0). The over-optimization regime (reward up, KL up, quality down) was not reached, so these runs cannot say how informative the reward becomes *as the policy drifts*: that is an honest null, not evidence that the reward model is robust. What the data do show is that the reward is a noisy signal at the per-sample level. It has modest pairwise accuracy (0.67) and a length bias (ρ ≈ 0.28). It is confounded by prompt truncation (a −1.4 reward gap in the training run). It is paired with a critic that is worse than a constant baseline, so the advantages are dominated by the terminal reward and critic noise. Under stronger optimization, these properties (length bias and continuation artefacts) are the ones to expect the policy to exploit first. *That is a hypothesis.*
 
 ---
 
@@ -150,24 +152,25 @@ Console precision: R and H to 3 dp, KL and the losses to 4 dp.
 | β = 0 (ε 0.2) | 1.5515 ± 0.103 | +0.0185 [−0.072, +0.110] | −9.6e-6 | −0.0028 | 1.0481 | 292.11 | 0.075 | 0.9348 |
 | β = 0.10 (ε 0.2) | 1.5347 ± 0.103 | +0.0018 [−0.055, +0.068] | −4.0e-5 | −0.0117 | 1.0588 | 294.87 | 0.100 | 0.9314 |
 | β = 0.20 (ε 0.2) | 1.5842 ± 0.111 | +0.0513 [−0.040, +0.144] | −1.8e-5 | −0.0053 | 1.0645 | 301.37 | 0.085 | 0.9325 |
+| **standard, 20 updates** (ε 0.2, β 0.1) | 1.5671 ± 0.102 | +0.0341 [−0.034, +0.106] | −1.5e-5 | −0.0045 | 1.0566 | 297.72 | 0.075 | 0.9315 |
 
-Sources: midpoint row `log → "Baseline (midpoint, held-out)"` (= `forks/midpoint_baseline_heldout.json → summary`); fork rows `log → KL-study table` (= `kl_study.json → table`: heldout_reward, d_vs_mid, heldout_kl_seq, heldout_entropy, heldout_len, heldout_trunc, heldout_distinct2).
+Standard row: `standard_heldout.json → summary` and `samples[].reward` (paired vs midpoint). Sources: midpoint row `log → "Baseline (midpoint, held-out)"` (= `forks/midpoint_baseline_heldout.json → summary`); fork rows `log → KL-study table` (= `kl_study.json → table`: heldout_reward, d_vs_mid, heldout_kl_seq, heldout_entropy, heldout_len, heldout_trunc, heldout_distinct2).
 ⁴ Paired bootstrap over prompts (2000 resamples, seed 6304) from `forks/*/heldout.json` vs `forks/midpoint_baseline_heldout.json → samples[].reward`; SE from `heldout.json → summary.reward_stderr`.
 ⁵ Derived as KL/seq ÷ length. This identity is exact for `evaluate_policy`. The log prints KL/token rounded to −0.0000.
 
 ### Table 3 — Fork grid over (ε, β) (8 updates each)
 
-| ε | β | cached affected / L_clip (as run)⁶ | expected floor⁷ | train clip frac (nominal / active) | updates clipped | max \|ρ−1\| | grad-norm CV | max approx-KL/step | held-out reward (Δ) | wall-clock s | peak VRAM GiB (alloc / res) |
+| ε | β | cached affected / L_clip (as run)⁶ | corrected cached affected / active / L_clip⁷ | train clip frac (nominal / active) | updates clipped | max \|ρ−1\| | grad-norm CV | max approx-KL/step | held-out reward (Δ) | wall-clock s | peak VRAM GiB (alloc / res) |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| 0.05 | 0.10 | ~~0.554 / −0.096~~ | 0.137 | 0 / 0 | 0/8 | 0.0311 | 0.876 | 0.0006 | 1.5347 (+0.002) | 92.1 | 6.23 / 6.47 |
-| 0.20 | 0.10 | ~~0.338 / −0.073~~ | 0.002 | 0 / 0 | 0/8 | 0.0311 | 0.876 | 0.0006 | 1.5347 (+0.002) | 95.0 | 6.23 / 6.49 |
-| 0.50 | 0.10 | ~~0.178 / −0.049~~ | 0.000 | 0 / 0 | 0/8 | 0.0311 | 0.876 | 0.0006 | 1.5347 (+0.002) | 92.5 | 6.23 / 6.49 |
-| 0.20 | 0 | (as ε 0.20) | 0.002 | 0 / 0 | 0/8 | 0.0274 | 0.829 | 0.0007 | 1.5515 (+0.019) | 91.3 | 6.23 / 6.48 |
-| 0.20 | 0.20 | (as ε 0.20) | 0.002 | 0 / 0 | 0/8 | 0.0287 | 0.869 | 0.0004 | 1.5842 (+0.051) | 88.7 | 6.23 / 6.50 |
+| 0.05 | 0.10 | ~~0.554 / −0.096~~ | 0.108 / 0.052 / −0.0096 | 0 / 0 | 0/8 | 0.0311 | 0.876 | 0.0006 | 1.5347 (+0.002) | 92.1 | 6.23 / 6.47 |
+| 0.20 | 0.10 | ~~0.338 / −0.073~~ | 0.0085 / 0.0039 / −0.0082 | 0 / 0 | 0/8 | 0.0311 | 0.876 | 0.0006 | 1.5347 (+0.002) | 95.0 | 6.23 / 6.49 |
+| 0.50 | 0.10 | ~~0.178 / −0.049~~ | 0.0056 / 0.0026 / −0.0078 | 0 / 0 | 0/8 | 0.0311 | 0.876 | 0.0006 | 1.5347 (+0.002) | 92.5 | 6.23 / 6.49 |
+| 0.20 | 0 | (as ε 0.20) | 0.0085 / 0.0039 / −0.0082 | 0 / 0 | 0/8 | 0.0274 | 0.829 | 0.0007 | 1.5515 (+0.019) | 91.3 | 6.23 / 6.48 |
+| 0.20 | 0.20 | (as ε 0.20) | 0.0085 / 0.0039 / −0.0082 | 0 / 0 | 0/8 | 0.0287 | 0.869 | 0.0004 | 1.5842 (+0.051) | 88.7 | 6.23 / 6.50 |
 
 Sources: `log → clipping-study table` (= `clipping_study.json → table`: fork_clip_frac, fork_active_clip, max_abs_ratio_dev, grad_norm_cv, approx_kl_step_max, heldout_reward, d_reward_vs_mid, wall_s); per-update `clip=`; `log → "[run] done: … peak VRAM"`.
 ⁶ `clipping_cached_batch.json → static`. **Invalid** because of the prompt mismatch (§A.2.1); struck through.
-⁷ Proxy computed from the cache's own old vs ref columns (§A.2.2).
+⁷ Measured with corrected prompts (`clipping_cached_batch_fixed.json → static`); noise-only floor 0.112 / 0.0084 / 0.0057 (same file, `noise_only_affected_fraction`).
 β-fork stability columns from `forks/fork_eps0.2_beta{0,0.2}/summary.json → stability`.
 
 ### Table 4 — Reliability diagnostics
@@ -224,7 +227,7 @@ Other heuristic candidates (`qualitative_candidates.json`) were read and rejecte
 * **Figure 2 — `fig2_clipping_study`.**
   * (a) The largest per-token policy ratio deviation reached by any of the three matched 8-update forks (|ρ−1| = 0.031) against the clip bands ε ∈ {0.05, 0.20, 0.50}; no band is reached.
   * (b) Pre-clip gradient norm per update for the three ε forks; the trajectories coincide exactly.
-  * (c) Cached-batch affected-token fraction as reported by the rerun (orange; invalid, prompts mismatched) vs the expected numerical floor estimated from the cache's own old/ref log-prob columns (blue).
+  * (c) Cached-batch affected-token fraction: the buggy rerun (orange; prompts mismatched, invalid) vs the corrected measurement (blue, 0.108 / 0.009 / 0.006), which equals the numerical floor measured on the frozen reference.
 * **Figure 3 — `fig3_kl_study`.** KL-pressure forks (8 updates, ε = 0.20, β ∈ {0, 0.10, 0.20}, identical prompts and seeds).
   * (a–c) Per-update training reward, KL/token and entropy. Grey band = update 3, the first update whose sampled text differs; there β = 0 and β = 0.20 share a response while β = 0.10 differs.
   * (d) Held-out reward ± 1.96 SE (midpoint SE used for the forks pending per-sample data).
@@ -250,6 +253,4 @@ Other heuristic candidates (`qualitative_candidates.json`) were read and rejecte
   * `figures/fig{1..4}_*.{png,pdf}`
   * `data/kaggle_console_log.txt`, `data/per_update_from_log.csv`, `data/cache_audit.csv`, `data/standard_prompt_schedule.csv`
 
-**Still to run (GPU):**
-1. Corrected cached-batch measurement: `python -m analysis.task2_cached_batch_fixed --config configs/ppo.yaml` (a few minutes, no forks), then re-run `python -m analysis.task2_report_stats --root . --out results/task2_ppo/analysis`.
-2. Held-out evaluation of the standard adapter: `python -m task2_ppo.evaluate --config configs/ppo.yaml --adapter outputs/task2_ppo/standard --name standard` (~16 min).
+**All runs complete.** The corrected cached-batch measurement ran on Colab (log: `data/colab_session3/cached_fixed.log`; the TensorFlow `Could not find cuda drivers` line in it is harmless, the run used the T4).

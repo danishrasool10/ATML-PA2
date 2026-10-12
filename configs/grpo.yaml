@@ -16,3 +16,20 @@ output: outputs/task3_grpo/standard
 results_dir: results/task3_grpo
 group_cache: cached/grpo_k_cache.jsonl
 cache_generation_cap: 768
+
+adv_eps: 1.0e-6
+std_gate: 1.0e-6
+micro_batch_size: 1
+disable_dropout: true
+reward_max_length: 1280
+eval_max_response_length: 768
+eval_batch_size: 8
+devices:
+  policy: cuda:0
+  frozen: cuda:1
+
+group_study:
+  budget: null
+  replicates: 4000
+  difficulty_bins: 3
+  std_thresholds: [1.0e-6, 0.05, 0.10, 0.25]

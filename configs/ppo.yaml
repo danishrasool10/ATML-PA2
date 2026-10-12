@@ -32,3 +32,8 @@ max_grad_norm: 1.0
 output: outputs/task2_ppo/standard
 results_dir: results/task2_ppo
 cached_rollouts: cached/ppo_rollout.pt
+
+# trainable policy + critic on `policy`; frozen 8-bit reward model pinned to `frozen`
+devices:
+  policy: cuda:0
+  frozen: cuda:1

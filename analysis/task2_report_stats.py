@@ -599,6 +599,15 @@ def heldout_table(parsed: dict, art: dict) -> list[dict]:
             m, lo, hi = paired_bootstrap_ci(d)
             row.update({"d_vs_mid": m, "ci95_lo": lo, "ci95_hi": hi, "ci_type": "paired bootstrap (2000, seed 6304)",
                         "source": f"forks/{name}/heldout.json vs forks/midpoint_baseline_heldout.json"})
+        st = art["heldout"].get("standard")
+        if st:
+            row = {"condition": "standard (20 updates, eps 0.2, beta 0.1)", "beta": 0.1, "ci_type": "paired bootstrap (2000, seed 6304)",
+                   "source": "standard_heldout.json vs forks/midpoint_baseline_heldout.json"}
+            row.update(_heldout_from_json(st))
+            d = [x["reward"] - ms[x["idx"]]["reward"] for x in st["samples"] if x["idx"] in ms]
+            m, lo, hi = paired_bootstrap_ci(d)
+            row.update({"d_vs_mid": m, "ci95_lo": lo, "ci95_hi": hi})
+            rows.append(row)
     return rows
 
 
@@ -755,7 +764,7 @@ def heldout_sample_stats(art: dict, ev_rows: list[dict], ev_tok) -> dict | None:
     out["midpoint_frac_response_starts_midsentence_heuristic"] = float(starts_mid.mean())
     noise, ident = [], {}
     for name, h in art["heldout"].items():
-        if name in ("midpoint", "standard") or name in ("fork_eps0.05_beta0.1", "fork_eps0.5_beta0.1"):
+        if name in ("midpoint",) or name in ("fork_eps0.05_beta0.1", "fork_eps0.5_beta0.1"):
             continue   # eps forks are bit-identical to (0.2, 0.1); count each distinct trajectory once
         same = [(s, ms[s["idx"]]) for s in h["samples"]
                 if s["idx"] in ms and s["response"] == ms[s["idx"]]["response"] and s["length"] == ms[s["idx"]]["length"]]
@@ -999,7 +1008,7 @@ def main():
     (out / "stats.json").write_text(json.dumps(_jsonable(stats), indent=2), encoding="utf-8")
     if not args.no_figures:
         try:
-            make_figures(out, runs, parsed, t2, t3, cache_summ, sched_info, rq2)
+            make_figures(out, runs, parsed, t2[:4], t3, cache_summ, sched_info, rq2)
         except ImportError as e:
             print("figures skipped:", e)
     print(f"wrote {out}")
@@ -1106,15 +1115,21 @@ def make_figures(out: Path, runs: dict, parsed: dict, t2: list[dict], t3: list[d
     w = 0.36
     a.bar(xs - w / 2 - 0.01, [r["affected_token_fraction"] for r in static], w, color=C2,
           label="as run (wrong prompts: INVALID)")
-    a.bar(xs + w / 2 + 0.01, [proxy[f"eps{e:g}"] for e in eps_vals], w, color=C1,
-          label="numerical-floor proxy (cache old vs ref)")
+    fixed_p = out.parent / "clipping_cached_batch_fixed.json"
+    if fixed_p.exists():
+        fx = {round(r["epsilon"], 4): r for r in _read_json(fixed_p)["static"]}
+        proxy = {f"eps{e:g}": fx[round(e, 4)]["affected_token_fraction"] for e in eps_vals}
+        lab2 = "corrected prompts (measured)"
+    else:
+        lab2 = "numerical-floor proxy (cache old vs ref)"
+    a.bar(xs + w / 2 + 0.01, [proxy[f"eps{e:g}"] for e in eps_vals], w, color=C1, label=lab2)
     for x, v in zip(xs - w / 2, [r["affected_token_fraction"] for r in static]):
         a.text(x, v + 0.01, f"{v:.2f}", ha="center", fontsize=7, color=INK2)
     for x, e in zip(xs + w / 2, eps_vals):
         a.text(x, proxy[f"eps{e:g}"] + 0.01, f"{proxy[f'eps{e:g}']:.3f}", ha="center", fontsize=7, color=INK2)
     a.set_xticks(xs, [f"eps {e:g}" for e in eps_vals])
     a.set_ylabel("affected-token fraction")
-    a.set_title("c  Cached batch: reported vs expected floor", loc="left")
+    a.set_title("c  Cached batch: buggy run vs corrected", loc="left")
     a.legend(fontsize=7, loc="upper right")
     a.set_ylim(0, 0.68)
     _save(fig, out, "fig2_clipping_study")

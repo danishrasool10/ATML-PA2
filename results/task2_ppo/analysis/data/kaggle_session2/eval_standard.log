@@ -1,0 +1,2 @@
+[evaluate:standard] {'n_prompts': 200, 'reward_mean': 1.5671, 'reward_stderr': 0.1021, 'kl_per_token': -0.0, 'kl_per_sequence': -0.0045, 'entropy': 1.0566, 'response_length': 297.72, 'truncation_rate': 0.075, 'distinct2': 0.9315, 'eval_wall_s': 1094.1192}
+saved -> /kaggle/working/ATML-PA2/ATML-PA2/results/task2_ppo/standard_heldout.json

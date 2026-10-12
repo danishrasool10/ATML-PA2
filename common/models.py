@@ -60,7 +60,8 @@ def make_value_lora_config(cfg: dict) -> LoraConfig:
     )
 
 
-def load_policy(cfg: dict, adapter_path: str | None = None, trainable: bool = False, fresh_lora: bool = False):
+def load_policy(cfg: dict, adapter_path: str | None = None, trainable: bool = False, fresh_lora: bool = False,
+                device: str | torch.device | None = None):
     dtype = resolve_dtype(cfg.get("dtype", "float16"))
     model = AutoModelForCausalLM.from_pretrained(
         cfg["base_model"],
@@ -79,7 +80,9 @@ def load_policy(cfg: dict, adapter_path: str | None = None, trainable: bool = Fa
     elif fresh_lora:
         model = get_peft_model(model, make_lora_config(cfg))
 
-    if torch.cuda.is_available():
+    if device is not None:
+        model = model.to(device)
+    elif torch.cuda.is_available():
         model = model.cuda()
 
     if trainable:
@@ -126,17 +129,20 @@ def _quant_config(bits: int | None, dtype):
     raise ValueError(bits)
 
 
-def load_reward_model(cfg: dict):
+def load_reward_model(cfg: dict, device: str | torch.device | None = None):
+    """`device` pins the whole model to one device (device_map="auto" shards an 8-bit RM across every visible GPU)."""
     dtype = resolve_dtype(cfg.get("dtype", "float16"))
     qcfg = _quant_config(8 if cfg.get("quantize_frozen_models", True) else None, dtype)
     kwargs = {"num_labels": 1, "low_cpu_mem_usage": True}
     if qcfg is not None:
-        kwargs.update({"quantization_config": qcfg, "device_map": "auto"})
+        kwargs.update({"quantization_config": qcfg, "device_map": {"": str(device)} if device is not None else "auto"})
     else:
         kwargs["dtype"] = dtype
 
     model = AutoModelForSequenceClassification.from_pretrained(cfg["reward_model"], **kwargs)
-    if qcfg is None and torch.cuda.is_available():
+    if qcfg is None and device is not None:
+        model = model.to(device)
+    elif qcfg is None and torch.cuda.is_available():
         model = model.cuda()
 
     # The RM repository tokenizer was incompatible with the pinned Transformers build during
