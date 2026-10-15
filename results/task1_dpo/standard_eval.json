@@ -1,0 +1,98 @@
+{
+  "name": "standard",
+  "adapter": "outputs/task1_dpo/standard",
+  "beta": 0.1,
+  "seed": 6304,
+  "eval_file": "data/dpo_standard_eval.jsonl",
+  "n_skipped_overlength": 10,
+  "preference": {
+    "n": 290,
+    "pref_accuracy": 0.6172413793103448,
+    "policy_raw_accuracy": 0.496551724137931,
+    "ref_raw_accuracy": 0.5,
+    "reward_margin_mean": 0.04438657647705284,
+    "chosen_logratio_mean": -0.46033955158601547,
+    "rejected_logratio_mean": -0.9042053163565439
+  },
+  "preference_by_stratum": {
+    "chosen_longer": {
+      "n": 144,
+      "pref_accuracy": 0.5486111111111112,
+      "policy_raw_accuracy": 0.20833333333333334,
+      "ref_raw_accuracy": 0.20833333333333334,
+      "reward_margin_mean": 0.01730276885338956,
+      "chosen_logratio_mean": -0.5108252565066019,
+      "rejected_logratio_mean": -0.6838529450404975
+    },
+    "equal_length": {
+      "n": 8,
+      "pref_accuracy": 0.625,
+      "policy_raw_accuracy": 0.625,
+      "ref_raw_accuracy": 0.75,
+      "reward_margin_mean": 0.007709398679435254,
+      "chosen_logratio_mean": -0.009619379416108131,
+      "rejected_logratio_mean": -0.08671336621046066
+    },
+    "rejected_longer": {
+      "n": 138,
+      "pref_accuracy": 0.6884057971014492,
+      "policy_raw_accuracy": 0.7898550724637681,
+      "ref_raw_accuracy": 0.7898550724637681,
+      "reward_margin_mean": 0.07477415415957786,
+      "chosen_logratio_mean": -0.43378752164974593,
+      "rejected_logratio_mean": -1.1815290632455244
+    }
+  },
+  "generation": {
+    "n_prompts": 200,
+    "kl_per_token": -6.941998913222529e-06,
+    "kl_per_sequence": -0.001150707644992508,
+    "rm_score_policy": 1.3863835906982422,
+    "rm_score_ref": 1.353376989364624,
+    "rm_win_rate_vs_ref": 0.525,
+    "mean_len_tokens_policy": 165.76,
+    "median_len_tokens_policy": 251.5,
+    "mean_len_tokens_ref": 165.09,
+    "mean_words_policy": 117.355,
+    "truncation_rate_policy": 0.495,
+    "eos_rate_policy": 0.505,
+    "length_rm_corr_policy": -0.08634763636587996
+  },
+  "qualitative_examples": [
+    {
+      "prompt": "Please create a comprehensive guide that includes step-by-step instructions and a list of necessary ingredients and tools for making delicious homemade pizza, as well as tips for achieving the perfect crust, sauce, cheese, and toppings. Additionally, please aim for a clear and concise writing style that is accessible to beginners in the kitchen.",
+      "reference_response": "Making Homemade Pizza: A Comprehensive Guide\n\nIngredients:\n\n- 1 cup all-purpose flour (500g)\n- 2 tsp active dry yeast \n- 3/4 tsp salt\n- 1 tbsp sugar\n- 1 cup warm water (around 110°F or 43°C)\n- 1 Tbsp olive oil\n- Marinara sauce (homemade or store-bought)\n- Mozzarella cheese, sliced into thin rounds\n- Additional toppings of your choice (such as pepperoni, sausage, mushrooms, bell peppers, onions, etc.)\n\nTools:\n\n- Large mixing bowl\n- Measuring cups and spoons\n- Rolling pin\n- Pizza peel (optional but recommended)\n- Baking stone or preheated oven rack (optional)\n- Pizza cutter\n- Knife\n- Mixing spoon\n- Parchment paper\n- Grater (optional)\n\nInstructions:\n\n1. Preheat your oven to 475°F (246°C) with a baking stone or preheating an oven rack.\n\n2. In a large mixing bowl, combine the flour, yeast, sugar, and salt. Mix until well combined.\n\n3. Make a well in the center of the mixture and pour in the warm water. Stir with",
+      "policy_response": "Making Homemade Pizza: A Comprehensive Guide\n\nIngredients:\n\n- 1 cup all-purpose flour (adjust based on desired thickness)\n- 2 tsp salt\n- 1 tbsp sugar\n- 1 tbsp olive oil\n- 3/4 cup warm water (around 105°F or 40°C)\n\nFor Sauce:\n- 1 can whole peeled tomatoes\n- 2 cloves garlic, minced\n- 2 tbsp olive oil\n- 1 tsp dried oregano\n- Salt and pepper to taste\n\nFor Cheese:\n- 1 cup mozzarella cheese, shredded\n- 1/2 cup Parmesan cheese, grated\n- Optional: nutritional yeast for added flavor\n\nFor Toppings:\n- Your choice of meats, vegetables, and other desired ingredients\n\nTools:\n- Rolling pin\n- Pizza stone or baking sheet lined with parchment paper\n- Parchment paper\n- Mixing bowl\n- Spatula\n- Knife\n- Measuring cups and spoons\n- Oven mitts\n- Baking stone or pizza peel\n\nInstructions:\n\n1. Begin by preheating your oven to 475°F (245°C) with a pizza stone or baking sheet inside.\n\n2. In a large mixing bowl, combine flour",
+      "rm_ref": -0.140869140625,
+      "rm_policy": -0.1290283203125
+    },
+    {
+      "prompt": "How can incorporating gratitude practices into daily routines improve the communication between couples in long-term relationships?",
+      "reference_response": "Incorporating gratitude practices into daily routines can significantly enhance communication between couples in long-term relationships for several reasons:\n\n1. **Increased Emotional Connection**: Expressing gratitude fosters an emotional connection between partners. When one partner expresses appreciation for another's efforts or actions, it strengthens their bond and encourages mutual respect.\n\n2. **Improved Communication Style**: Gratitude is often expressed through words of praise, which can encourage more open and honest communication. It helps to build a culture where expressing appreciation is valued, leading to healthier conversations about feelings and needs.\n\n3. **Reduced Conflict**: Couples who regularly express gratitude tend to be less likely to engage in negative arguments because they avoid focusing on perceived shortcomings. Instead, they focus on what’s right with each other, reducing conflict.\n\n4. **Enhanced Empathy**: Practicing gratitude encourages empathy towards your partner. This understanding can lead to better listening skills and deeper connections as you both learn to appreciate each other from different perspectives.\n\n5. **Promotes Positive Attitude**: Regularly practicing gratitude can shift your perspective towards positivity and optimism. A positive attitude reduces stress levels and enhances overall well-being, which positively impacts communication.\n\n6. **Encourages Openness**: By openly sharing what you appreciate about your partner, there is increased openness",
+      "policy_response": "Incorporating gratitude practices into daily routines can significantly enhance communication between couples in long-term relationships for several reasons:\n\n1. **Increased Emotional Connection**: Expressing gratitude fosters an emotional connection between partners. When one partner expresses appreciation for another's efforts or actions, it strengthens their bond and encourages mutual respect.\n\n2. **Improved Communication Style**: Gratitude is often expressed through words of praise, which can encourage more open and honest communication. It helps to build a culture where expressing appreciation is valued, leading to healthier conversations about feelings and needs.\n\n3. **Reduced Conflict**: Couples who regularly express gratitude tend to be less likely to harbor resentment towards each other. This reduces conflict and tension, making it easier to communicate effectively without arguments or misunderstandings.\n\n4. **Empathy Development**: By focusing on what others have done positively, couples develop empathy for each other’s perspectives. This deeper understanding enhances the ability to connect with each other on a personal level.\n\n5. **Enhanced Self-Esteem**: When individuals feel appreciated and acknowledged, they generally experience higher self-esteem. This positive self-image can translate into better confidence in interpersonal interactions, including effective communication.\n\n6. **Longevity of Relationships**: Cultivating a habit of gratitude over time can strengthen the foundation of trust and",
+      "rm_ref": 3.28125,
+      "rm_policy": 3.05859375
+    },
+    {
+      "prompt": "Formulate a meaningful statement\nClicks, Color, Review",
+      "reference_response": "The relationship between clicks, color, and reviews can be analyzed to better understand consumer behavior on an e-commerce platform or website.",
+      "policy_response": "The relationship between clicks, color, and reviews can be seen as an interactive element in digital marketing or e-commerce platforms where the appearance of products (color), their performance (click-through rate based on design aesthetics), and customer feedback (reviews) all contribute to the overall shopping experience.",
+      "rm_ref": 1.1337890625,
+      "rm_policy": 2.62890625
+    },
+    {
+      "prompt": "convert model .pickle ke . tflite",
+      "reference_response": "To convert a TensorFlow (TensorFlow) model from a `.pickle` file to an `.tflite` file, you can use the `tf.lite.TFLiteConverter.from_keras_model()` method or the `keras2onnx.convert_tensorflow` function. Here's how you can do it:\n\n### Using tf.keras\n\n1. **Load your Keras model**:\n   ```python\n   import tensorflow as tf\n\n   # Load your Keras model here\n   model = ...  # Your pre-trained Keras model instance\n   ```\n\n2. **Convert the model using tf.lite**:\n   ```python\n   converter = tf.lite.TFLiteConverter.from_keras_model(model)\n   tflite_model = converter.convert()\n   ```\n\n3. **Save the converted model**:\n   ```python\n   with open('converted_model.tflite', 'wb') as f:\n       f.write(tflite_model)\n   ```\n\n### Using keras2onnx\n\nIf you have used Keras and need to convert it to ONNX first before converting to TFLite, follow these steps:\n\n1. **Convert Keras model to ONNX**:\n   ```python\n   from keras2onnx import convert",
+      "policy_response": "To convert a TensorFlow (TensorFlow) model from a `.pickle` file to an `.tflite` file, you'll need to follow these steps:\n\n1. **Install the necessary libraries**:\n   - Make sure you have TensorFlow installed.\n   ```bash\n   pip install tensorflow\n   ```\n\n2. **Load the TensorFlow model in Python**:\n   Load your TensorFlow model using `tf.keras.models`.\n\n3. **Save the model as a `.h5` file**:\n   Save the model configuration and weights in a `.h5` format.\n\n4. **Convert the model to TFLite**:\n   Use the `tf.lite.TFLiteConverter.from_keras_model()` method to convert the model to TFLite format.\n\nHere is a step-by-step example of how to do this:\n\n### Step 1: Install necessary libraries\n\n```bash\npip install tensorflow\n```\n\n### Step 2: Create or load your TensorFlow model\n\nAssuming you have already trained your model and saved it in a `.pickle` file, let's say the pickle file contains both the model architecture and the weights.\n\n#### Example with a `.pickle` file containing only weights (weights_only=True)\n\nIf your `.pickle` file includes just the weights:\n\n",
+      "rm_ref": -0.921875,
+      "rm_policy": -1.880859375
+    },
+    {
+      "prompt": "\"Yes, and\" is a rule-of-thumb in improvisational comedy that suggests that a participant in a dialogue should accept what another participant has stated (\"Yes\") and then expand on that line of thought or context (\"and...\"). Given a prompt and two responses, identify which response is the type of \"yes, and\". Indicate your answer by 'Response 1' if the first response is correct, otherwise 'Response 2'.  Note that a \"Yes, and\" does not require someone explicitly saying 'yes, and...' as part of a dialogue exchange.\nQ: Prompt: I don't want to go out there. I can't sing. My voice is too low. \n Response 1: Oh honey, get the camera! \n Response 2: Getty, what are you talking about?\nA: ",
+      "reference_response": "Response 2",
+      "policy_response": "Response 2",
+      "rm_ref": 1.408203125,
+      "rm_policy": 1.271484375
+    }
+  ]
+}

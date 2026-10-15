@@ -1,0 +1,10 @@
+{"data_index": 0, "prompt_id": "wl01", "limit": 40, "words": 42, "tokens": 52, "truncated": false, "compliant": 0.0, "overshoot": 2}
+{"data_index": 1, "prompt_id": "wl02", "limit": 25, "words": 31, "tokens": 36, "truncated": false, "compliant": 0.0, "overshoot": 6}
+{"data_index": 2, "prompt_id": "wl03", "limit": 30, "words": 24, "tokens": 29, "truncated": false, "compliant": 1.0, "overshoot": 0}
+{"data_index": 3, "prompt_id": "wl04", "limit": 35, "words": 50, "tokens": 57, "truncated": false, "compliant": 0.0, "overshoot": 15}
+{"data_index": 4, "prompt_id": "wl05", "limit": 45, "words": 51, "tokens": 68, "truncated": false, "compliant": 0.0, "overshoot": 6}
+{"data_index": 5, "prompt_id": "wl06", "limit": 30, "words": 30, "tokens": 33, "truncated": false, "compliant": 1.0, "overshoot": 0}
+{"data_index": 6, "prompt_id": "wl07", "limit": 35, "words": 82, "tokens": 92, "truncated": false, "compliant": 0.0, "overshoot": 47}
+{"data_index": 7, "prompt_id": "wl08", "limit": 40, "words": 36, "tokens": 44, "truncated": false, "compliant": 1.0, "overshoot": 0}
+{"data_index": 8, "prompt_id": "wl09", "limit": 30, "words": 19, "tokens": 25, "truncated": false, "compliant": 1.0, "overshoot": 0}
+{"data_index": 9, "prompt_id": "wl10", "limit": 45, "words": 62, "tokens": 72, "truncated": false, "compliant": 0.0, "overshoot": 17}

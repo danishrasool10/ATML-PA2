@@ -1,0 +1,12 @@
+{
+  "run_name": "standard",
+  "beta": 0.1,
+  "optimizer_steps": 91,
+  "examples_seen": 1446,
+  "final_step_loss": 0.6197078029314677,
+  "final_step_pref_accuracy": 0.8333333333333334,
+  "init_checksum": -0.546023,
+  "data_order_sha256": "e2fb913cd06535069c2387ea87aaa2545a6c5483cc5e36510785d4c600dc5fa6",
+  "wall_seconds": 1282.380615048,
+  "adapter_path": "/kaggle/working/ATML-PA2/outputs/task1_dpo/standard"
+}

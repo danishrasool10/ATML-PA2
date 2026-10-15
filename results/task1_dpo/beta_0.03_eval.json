@@ -1,0 +1,98 @@
+{
+  "name": "beta_0.03",
+  "adapter": "outputs/task1_dpo/beta_0.03",
+  "beta": 0.03,
+  "seed": 6304,
+  "eval_file": "data/dpo_standard_eval.jsonl",
+  "n_skipped_overlength": 10,
+  "preference": {
+    "n": 290,
+    "pref_accuracy": 0.6172413793103448,
+    "policy_raw_accuracy": 0.496551724137931,
+    "ref_raw_accuracy": 0.5,
+    "reward_margin_mean": 0.004405559486966451,
+    "chosen_logratio_mean": -0.19932597864997284,
+    "rejected_logratio_mean": -0.34617796154885455
+  },
+  "preference_by_stratum": {
+    "chosen_longer": {
+      "n": 144,
+      "pref_accuracy": 0.5138888888888888,
+      "policy_raw_accuracy": 0.20833333333333334,
+      "ref_raw_accuracy": 0.20833333333333334,
+      "reward_margin_mean": -0.0004883056413382292,
+      "chosen_logratio_mean": -0.24083006381988525,
+      "rejected_logratio_mean": -0.22455320910861096
+    },
+    "equal_length": {
+      "n": 8,
+      "pref_accuracy": 0.375,
+      "policy_raw_accuracy": 0.625,
+      "ref_raw_accuracy": 0.75,
+      "reward_margin_mean": 0.00018378635868430135,
+      "chosen_logratio_mean": -0.004519866779446602,
+      "rejected_logratio_mean": -0.010646078735589981
+    },
+    "rejected_longer": {
+      "n": 138,
+      "pref_accuracy": 0.7391304347826086,
+      "policy_raw_accuracy": 0.7898550724637681,
+      "ref_raw_accuracy": 0.7898550724637681,
+      "reward_margin_mean": 0.009756941831184794,
+      "chosen_logratio_mean": -0.16731047597241358,
+      "rejected_logratio_mean": -0.49254187034524005
+    }
+  },
+  "generation": {
+    "n_prompts": 200,
+    "kl_per_token": 5.221044809502661e-05,
+    "kl_per_sequence": 0.00868103285843972,
+    "rm_score_policy": 1.3856795501708985,
+    "rm_score_ref": 1.353376989364624,
+    "rm_win_rate_vs_ref": 0.555,
+    "mean_len_tokens_policy": 166.27,
+    "median_len_tokens_policy": 235.0,
+    "mean_len_tokens_ref": 165.09,
+    "mean_words_policy": 118.115,
+    "truncation_rate_policy": 0.485,
+    "eos_rate_policy": 0.515,
+    "length_rm_corr_policy": -0.09751756238628546
+  },
+  "qualitative_examples": [
+    {
+      "prompt": "Please create a comprehensive guide that includes step-by-step instructions and a list of necessary ingredients and tools for making delicious homemade pizza, as well as tips for achieving the perfect crust, sauce, cheese, and toppings. Additionally, please aim for a clear and concise writing style that is accessible to beginners in the kitchen.",
+      "reference_response": "Making Homemade Pizza: A Comprehensive Guide\n\nIngredients:\n\n- 1 cup all-purpose flour (500g)\n- 2 tsp active dry yeast \n- 3/4 tsp salt\n- 1 tbsp sugar\n- 1 cup warm water (around 110°F or 43°C)\n- 1 Tbsp olive oil\n- Marinara sauce (homemade or store-bought)\n- Mozzarella cheese, sliced into thin rounds\n- Additional toppings of your choice (such as pepperoni, sausage, mushrooms, bell peppers, onions, etc.)\n\nTools:\n\n- Large mixing bowl\n- Measuring cups and spoons\n- Rolling pin\n- Pizza peel (optional but recommended)\n- Baking stone or preheated oven rack (optional)\n- Pizza cutter\n- Knife\n- Mixing spoon\n- Parchment paper\n- Grater (optional)\n\nInstructions:\n\n1. Preheat your oven to 475°F (246°C) with a baking stone or preheating an oven rack.\n\n2. In a large mixing bowl, combine the flour, yeast, sugar, and salt. Mix until well combined.\n\n3. Make a well in the center of the mixture and pour in the warm water. Stir with",
+      "policy_response": "Making Homemade Pizza: A Comprehensive Guide\n\nIngredients:\n\n- 1 cup all-purpose flour (500g)\n- 2 tsp active dry yeast \n- 3/4 tsp salt\n- 1 tbsp sugar\n- 1 cup warm water (around 110°F or 43°C)\n- 1 Tbsp olive oil\n- Marinara sauce (homemade or store-bought)\n- Mozzarella cheese, sliced into thin rounds\n- Additional toppings of your choice (such as pepperoni, sausage, mushrooms, bell peppers, onions, etc.)\n\nTools:\n\n- Large mixing bowl\n- Measuring cups and spoons\n- Rolling pin\n- Pizza peel (optional but recommended)\n- Baking stone or preheated oven rack (optional)\n- Pizza cutter\n- Knife\n- Mixing spoon\n- Parchment paper\n- Grater (optional)\n\nInstructions:\n\n1. Preheat your oven to 475°F (246°C) with a baking stone or preheating an oven rack.\n\n2. In a large mixing bowl, combine the flour, yeast, sugar, and salt. Mix until well combined.\n\n3. Make a well in the center of the mixture and pour in the warm water. Stir with",
+      "rm_ref": -0.140869140625,
+      "rm_policy": -0.1356201171875
+    },
+    {
+      "prompt": "How can incorporating gratitude practices into daily routines improve the communication between couples in long-term relationships?",
+      "reference_response": "Incorporating gratitude practices into daily routines can significantly enhance communication between couples in long-term relationships for several reasons:\n\n1. **Increased Emotional Connection**: Expressing gratitude fosters an emotional connection between partners. When one partner expresses appreciation for another's efforts or actions, it strengthens their bond and encourages mutual respect.\n\n2. **Improved Communication Style**: Gratitude is often expressed through words of praise, which can encourage more open and honest communication. It helps to build a culture where expressing appreciation is valued, leading to healthier conversations about feelings and needs.\n\n3. **Reduced Conflict**: Couples who regularly express gratitude tend to be less likely to engage in negative arguments because they avoid focusing on perceived shortcomings. Instead, they focus on what’s right with each other, reducing conflict.\n\n4. **Enhanced Empathy**: Practicing gratitude encourages empathy towards your partner. This understanding can lead to better listening skills and deeper connections as you both learn to appreciate each other from different perspectives.\n\n5. **Promotes Positive Attitude**: Regularly practicing gratitude can shift your perspective towards positivity and optimism. A positive attitude reduces stress levels and enhances overall well-being, which positively impacts communication.\n\n6. **Encourages Openness**: By openly sharing what you appreciate about your partner, there is increased openness",
+      "policy_response": "Incorporating gratitude practices into daily routines can significantly enhance communication between couples in long-term relationships for several reasons:\n\n1. **Increased Emotional Connection**: Expressing gratitude fosters an emotional connection between partners. When one partner expresses appreciation for another's efforts or actions, it strengthens their bond and encourages mutual respect.\n\n2. **Improved Communication Style**: Gratitude is often expressed through words of praise, which can encourage more open and honest communication. It helps to build a culture where expressing appreciation is valued, leading to healthier conversations about feelings and needs.\n\n3. **Reduced Conflict**: Couples who regularly express gratitude tend to be less likely to engage in negative arguments because they avoid focusing on perceived shortcomings. Instead, they focus on what’s right with each other, reducing conflict.\n\n4. **Enhanced Empathy**: Practicing gratitude encourages empathy towards your partner. This understanding can lead to better listening skills and deeper connections as you both learn to appreciate each other from different perspectives.\n\n5. **Promotes Positive Attitude**: Regularly practicing gratitude can shift your perspective towards positivity and optimism. A positive attitude reduces stress levels and enhances overall well-being, which positively impacts communication.\n\n6. **Encourages Openness**: By openly sharing what you appreciate about your partner, there is increased openness",
+      "rm_ref": 3.28125,
+      "rm_policy": 3.396484375
+    },
+    {
+      "prompt": "Formulate a meaningful statement\nClicks, Color, Review",
+      "reference_response": "The relationship between clicks, color, and reviews can be analyzed to better understand consumer behavior on an e-commerce platform or website.",
+      "policy_response": "The relationship between clicks, color, and reviews can be analyzed to better understand consumer behavior on an e-commerce platform or website.",
+      "rm_ref": 1.1337890625,
+      "rm_policy": 0.9599609375
+    },
+    {
+      "prompt": "convert model .pickle ke . tflite",
+      "reference_response": "To convert a TensorFlow (TensorFlow) model from a `.pickle` file to an `.tflite` file, you can use the `tf.lite.TFLiteConverter.from_keras_model()` method or the `keras2onnx.convert_tensorflow` function. Here's how you can do it:\n\n### Using tf.keras\n\n1. **Load your Keras model**:\n   ```python\n   import tensorflow as tf\n\n   # Load your Keras model here\n   model = ...  # Your pre-trained Keras model instance\n   ```\n\n2. **Convert the model using tf.lite**:\n   ```python\n   converter = tf.lite.TFLiteConverter.from_keras_model(model)\n   tflite_model = converter.convert()\n   ```\n\n3. **Save the converted model**:\n   ```python\n   with open('converted_model.tflite', 'wb') as f:\n       f.write(tflite_model)\n   ```\n\n### Using keras2onnx\n\nIf you have used Keras and need to convert it to ONNX first before converting to TFLite, follow these steps:\n\n1. **Convert Keras model to ONNX**:\n   ```python\n   from keras2onnx import convert",
+      "policy_response": "To convert a TensorFlow (TensorFlow) model from a `.pickle` file to an `.tflite` file, you can use the `tf.lite.TFLiteConverter.from_keras_model()` method or the `keras2onnx.convert_tensorflow` function. Here's how you can do it:\n\n### Using tf.keras\n\n1. **Load your Keras model**:\n   ```python\n   import tensorflow as tf\n\n   # Load your Keras model here\n   model = ...  # Your pre-trained Keras model instance\n   ```\n\n2. **Convert the model using tf.lite**:\n   ```python\n   converter = tf.lite.TFLiteConverter.from_keras_model(model)\n   tflite_model = converter.convert()\n   ```\n\n3. **Save the converted model**:\n   ```python\n   with open('converted_model.tflite', 'wb') as f:\n       f.write(tflite_model)\n   ```\n\n### Using keras2onnx\n\nIf you have used Keras and need to convert it to ONNX first before converting to TFLite, follow these steps:\n\n1. **Convert Keras model to ONNX**:\n   ```python\n   from keras2onnx import convert",
+      "rm_ref": -0.921875,
+      "rm_policy": -0.990234375
+    },
+    {
+      "prompt": "\"Yes, and\" is a rule-of-thumb in improvisational comedy that suggests that a participant in a dialogue should accept what another participant has stated (\"Yes\") and then expand on that line of thought or context (\"and...\"). Given a prompt and two responses, identify which response is the type of \"yes, and\". Indicate your answer by 'Response 1' if the first response is correct, otherwise 'Response 2'.  Note that a \"Yes, and\" does not require someone explicitly saying 'yes, and...' as part of a dialogue exchange.\nQ: Prompt: I don't want to go out there. I can't sing. My voice is too low. \n Response 1: Oh honey, get the camera! \n Response 2: Getty, what are you talking about?\nA: ",
+      "reference_response": "Response 2",
+      "policy_response": "Response 2",
+      "rm_ref": 1.408203125,
+      "rm_policy": 1.435546875
+    }
+  ]
+}

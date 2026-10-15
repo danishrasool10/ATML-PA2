@@ -1,0 +1,75 @@
+{
+  "runs": {
+    "0.03": {
+      "run_name": "beta_0.03",
+      "beta": 0.03,
+      "optimizer_steps": 38,
+      "examples_seen": 600,
+      "final_step_loss": 0.6924591213464737,
+      "final_step_pref_accuracy": 0.375,
+      "init_checksum": -0.546023,
+      "data_order_sha256": "847495372324435cab8e41d7fdef027e7509ec1e717f8288bad7ff3d8946ce10",
+      "wall_seconds": 529.2743723019998,
+      "adapter_path": "/kaggle/working/ATML-PA2/outputs/task1_dpo/beta_0.03"
+    },
+    "0.1": {
+      "run_name": "beta_0.10",
+      "beta": 0.1,
+      "optimizer_steps": 38,
+      "examples_seen": 600,
+      "final_step_loss": 0.6925571709871292,
+      "final_step_pref_accuracy": 0.375,
+      "init_checksum": -0.546023,
+      "data_order_sha256": "847495372324435cab8e41d7fdef027e7509ec1e717f8288bad7ff3d8946ce10",
+      "wall_seconds": 529.3872063270001,
+      "adapter_path": "/kaggle/working/ATML-PA2/outputs/task1_dpo/beta_0.10"
+    },
+    "0.3": {
+      "run_name": "beta_0.30",
+      "beta": 0.3,
+      "optimizer_steps": 38,
+      "examples_seen": 600,
+      "final_step_loss": 0.6937954723834991,
+      "final_step_pref_accuracy": 0.375,
+      "init_checksum": -0.546023,
+      "data_order_sha256": "847495372324435cab8e41d7fdef027e7509ec1e717f8288bad7ff3d8946ce10",
+      "wall_seconds": 529.3626929940006,
+      "adapter_path": "/kaggle/working/ATML-PA2/outputs/task1_dpo/beta_0.30"
+    }
+  },
+  "table": [
+    {
+      "beta": 0.03,
+      "final_train_loss": 0.6924591213464737,
+      "pref_accuracy": 0.6172413793103448,
+      "reward_margin": 0.004405559486966451,
+      "chosen_logratio": -0.19932597864997284,
+      "kl_per_token": 5.221044809502661e-05,
+      "rm_score": 1.3856795501708985,
+      "rm_win_rate_vs_ref": 0.555,
+      "mean_len_tokens": 166.27
+    },
+    {
+      "beta": 0.1,
+      "final_train_loss": 0.6925571709871292,
+      "pref_accuracy": 0.6068965517241379,
+      "reward_margin": 0.014225213185338113,
+      "chosen_logratio": -0.17480752348000633,
+      "kl_per_token": -2.5972112245333387e-05,
+      "rm_score": 1.386429443359375,
+      "rm_win_rate_vs_ref": 0.525,
+      "mean_len_tokens": 165.615
+    },
+    {
+      "beta": 0.3,
+      "final_train_loss": 0.6937954723834991,
+      "pref_accuracy": 0.6275862068965518,
+      "reward_margin": 0.036516948507713344,
+      "chosen_logratio": -0.12058343388589805,
+      "kl_per_token": -8.727547888699185e-05,
+      "rm_score": 1.3458964443206787,
+      "rm_win_rate_vs_ref": 0.49,
+      "mean_len_tokens": 166.35
+    }
+  ]
+}

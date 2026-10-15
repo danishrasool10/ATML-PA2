@@ -1,0 +1,12 @@
+{
+  "run_name": "length_balanced",
+  "beta": 0.1,
+  "optimizer_steps": 91,
+  "examples_seen": 1442,
+  "final_step_loss": 0.8070435523986816,
+  "final_step_pref_accuracy": 0.0,
+  "init_checksum": -0.546023,
+  "data_order_sha256": "9cb91bac7e42c2fe4614ad3cedfa7b43c1c454eed821c3a75b0d3ea3e2e5c5e6",
+  "wall_seconds": 971.5368403000002,
+  "adapter_path": "/kaggle/working/ATML-PA2/outputs/task1_dpo/length_balanced"
+}
