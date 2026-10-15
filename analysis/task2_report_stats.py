@@ -1164,8 +1164,9 @@ def make_figures(out: Path, runs: dict, parsed: dict, t2: list[dict], t3: list[d
     a.set_xticks(range(4), labels)
     a.set_ylim(1.2, 1.85)
     a.set_title("d  Held-out reward (+/- 1.96 SE)", loc="left")
-    a.text(0.5, 0.02, "fork SE not in log: midpoint SE used", transform=a.transAxes, fontsize=6.5, color=INK2,
-           ha="center", va="bottom")
+    if any(r.get("reward_se") is None for r in t2[:4]):
+        a.text(0.5, 0.02, "fork SE not in log: midpoint SE used", transform=a.transAxes, fontsize=6.5, color=INK2,
+               ha="center", va="bottom")
     a = ax[1][1]
     a.bar(range(4), [r["entropy"] for r in t2], color=cols, width=0.6)
     a.set_ylim(1.0, 1.08)
