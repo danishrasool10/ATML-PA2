@@ -1,0 +1,22 @@
+[validate_grpo_objective] per-group advantages + zero-variance gate, clipped surrogate (min), 1/T_k vs 1/L_max token weights, truncation masking, micro-batch accumulation, k3 KL: OK
+[standard] 01/20 R=+2.088 sdR=0.636 uninf=0.00 trunc=0.75 KL=+0.00009 H=1.228 len=495 Lpi=-1.4518 gn=0.599 t=28.3s
+[standard] 02/20 R=+1.800 sdR=2.204 uninf=0.00 trunc=0.00 KL=-0.00005 H=1.202 len=241 Lpi=-0.0000 gn=0.536 t=17.9s
+[standard] 03/20 R=+1.254 sdR=0.361 uninf=0.00 trunc=0.00 KL=+0.00027 H=1.132 len=55 Lpi=+0.0000 gn=0.457 t=8.0s
+[standard] 04/20 R=+2.529 sdR=0.229 uninf=0.00 trunc=0.00 KL=+0.00030 H=0.757 len=91 Lpi=-0.0000 gn=0.198 t=7.8s
+[standard] 05/20 R=+0.291 sdR=0.501 uninf=0.00 trunc=1.00 KL=+0.00007 H=0.469 len=512 Lpi=  n/a gn=  n/a t=26.6s
+[standard] 06/20 R=+0.328 sdR=0.165 uninf=0.00 trunc=0.00 KL=+0.00001 H=1.377 len=57 Lpi=+0.0000 gn=0.359 t=5.9s
+[standard] 07/20 R=+0.537 sdR=0.725 uninf=0.00 trunc=1.00 KL=-0.00015 H=1.255 len=512 Lpi=  n/a gn=  n/a t=26.7s
+[standard] 08/20 R=+1.568 sdR=0.073 uninf=0.00 trunc=0.00 KL=-0.00061 H=0.310 len=16 Lpi=+0.0000 gn=1.441 t=2.7s
+[standard] 09/20 R=-0.804 sdR=0.336 uninf=0.00 trunc=1.00 KL=+0.00004 H=0.697 len=512 Lpi=  n/a gn=  n/a t=26.7s
+[standard] 10/20 R=+1.314 sdR=0.308 uninf=0.00 trunc=1.00 KL=+0.00024 H=1.195 len=512 Lpi=  n/a gn=  n/a t=26.8s
+[standard] 11/20 R=+2.996 sdR=0.352 uninf=0.00 trunc=0.50 KL=+0.00006 H=0.942 len=397 Lpi=-0.7342 gn=0.202 t=27.4s
+[standard] 12/20 R=+2.761 sdR=0.356 uninf=0.00 trunc=0.00 KL=+0.00063 H=1.157 len=95 Lpi=-0.0000 gn=0.264 t=7.6s
+[standard] 13/20 R=+0.872 sdR=1.083 uninf=0.00 trunc=1.00 KL=+0.00012 H=1.076 len=512 Lpi=  n/a gn=  n/a t=26.6s
+[standard] 14/20 R=+0.451 sdR=0.571 uninf=0.00 trunc=0.00 KL=+0.00006 H=1.396 len=278 Lpi=+0.0000 gn=0.169 t=25.0s
+[standard] 15/20 R=+0.793 sdR=1.298 uninf=0.00 trunc=0.75 KL=+0.00018 H=1.119 len=390 Lpi=+1.6675 gn=2.130 t=28.0s
+[standard] 16/20 R=+2.804 sdR=0.485 uninf=0.00 trunc=0.00 KL=+0.00020 H=1.423 len=177 Lpi=-0.0000 gn=0.351 t=15.5s
+[standard] 17/20 R=+1.869 sdR=0.921 uninf=0.00 trunc=0.25 KL=+0.00011 H=0.929 len=384 Lpi=-0.4576 gn=0.139 t=27.8s
+[standard] 18/20 R=-0.655 sdR=0.297 uninf=0.00 trunc=0.00 KL=+0.00012 H=2.023 len=135 Lpi=+0.0000 gn=0.219 t=14.3s
+[standard] 19/20 R=+0.629 sdR=0.668 uninf=0.00 trunc=0.00 KL=-0.00016 H=0.943 len=244 Lpi=+0.0000 gn=0.212 t=25.8s
+[standard] 20/20 R=-0.048 sdR=0.939 uninf=0.00 trunc=0.25 KL=-0.00014 H=0.742 len=223 Lpi=+0.0800 gn=1.166 t=29.2s
+[standard] done: 404.7s (20.2s/update), peak VRAM cuda:0 3.99 GiB, cuda:1 5.34 GiB -> /kaggle/working/ATML-PA2/results/task3_grpo/standard
