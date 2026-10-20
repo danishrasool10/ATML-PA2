@@ -1,0 +1,12 @@
+{
+  "judge_model": "Qwen/Qwen2.5-3B-Instruct",
+  "quantized_4bit": true,
+  "max_new_tokens": 4,
+  "do_sample": false,
+  "cache": "judge_cache_gsm.json",
+  "n_pairs": 600,
+  "n_identical_pairs": 528,
+  "n_judge_calls": 72,
+  "n_cache_hits": 72,
+  "wall_s_this_run": 0.45379778300002727
+}

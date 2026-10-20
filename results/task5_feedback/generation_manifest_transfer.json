@@ -1,0 +1,81 @@
+{
+  "common": {
+    "base_model": "Qwen/Qwen2.5-1.5B-Instruct",
+    "dataset": "SVAMP",
+    "data_path": "data/math_transfer_eval.jsonl",
+    "data_sha256": "f24163301035ccd4b66d12b687887fe1e167dd31ef62d6bc62a2fa152dcdcb76",
+    "n_examples": 100,
+    "max_rendered_prompt_tokens": 114,
+    "release_prompt_match_rate": null,
+    "decoding": {
+      "do_sample": false,
+      "num_beams": 1,
+      "max_new_tokens": 512,
+      "max_prompt_length": 512,
+      "batch_size": 32,
+      "repetition_penalty": 1.0
+    }
+  },
+  "policies": {
+    "sft": {
+      "adapter": null,
+      "adapter_sha256": null,
+      "n": 100,
+      "accuracy": 0.61,
+      "format_compliance": 0.68,
+      "mean_response_tokens": 138.8,
+      "truncation_rate": 0.01,
+      "generation_config": {
+        "do_sample": false,
+        "num_beams": 1,
+        "repetition_penalty": 1.0,
+        "no_repeat_ngram_size": 0,
+        "temperature": null,
+        "top_p": null,
+        "top_k": null
+      },
+      "wall_s": 66.32554154200011,
+      "peak_vram_gib": 3.547183036804199
+    },
+    "rlvr": {
+      "adapter": "checkpoints/rlvr_policy",
+      "adapter_sha256": "b309564b45c0268e4e5ffb0db5cb100e557a2c407a68ea3fa3de91fe964d92c8",
+      "n": 100,
+      "accuracy": 0.63,
+      "format_compliance": 0.7,
+      "mean_response_tokens": 141.03,
+      "truncation_rate": 0.01,
+      "generation_config": {
+        "do_sample": false,
+        "num_beams": 1,
+        "repetition_penalty": 1.0,
+        "no_repeat_ngram_size": 0,
+        "temperature": null,
+        "top_p": null,
+        "top_k": null
+      },
+      "wall_s": 77.47779028900004,
+      "peak_vram_gib": 3.552584648132324
+    },
+    "rlaif": {
+      "adapter": "checkpoints/rlaif_policy",
+      "adapter_sha256": "e5a0eaacb3ce32a73fe86fd6a823be21c60a460eee8682493e5cc0f2e1019713",
+      "n": 100,
+      "accuracy": 0.63,
+      "format_compliance": 0.7,
+      "mean_response_tokens": 137.92,
+      "truncation_rate": 0.01,
+      "generation_config": {
+        "do_sample": false,
+        "num_beams": 1,
+        "repetition_penalty": 1.0,
+        "no_repeat_ngram_size": 0,
+        "temperature": null,
+        "top_p": null,
+        "top_k": null
+      },
+      "wall_s": 77.8144819659999,
+      "peak_vram_gib": 3.552584648132324
+    }
+  }
+}

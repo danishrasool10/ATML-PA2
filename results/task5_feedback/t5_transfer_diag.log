@@ -1,0 +1,45 @@
+SVAMP: 100 prompts | policies ['sft', 'rlvr', 'rlaif']
+[gen:sft] 2/4 batches  22.9s/batch  running acc=0.578
+[gen:sft] 4/4 batches  16.5s/batch  running acc=0.610
+[transfer:sft] acc=0.610 fmt=0.680 tok=138.8 trunc=0.010 wall=66s -> generations_transfer_sft.jsonl
+[gen:rlvr] 2/4 batches  26.0s/batch  running acc=0.562
+[gen:rlvr] 4/4 batches  19.2s/batch  running acc=0.630
+[transfer:rlvr] acc=0.630 fmt=0.700 tok=141.0 trunc=0.010 wall=77s -> generations_transfer_rlvr.jsonl
+[gen:rlaif] 2/4 batches  26.1s/batch  running acc=0.594
+[gen:rlaif] 4/4 batches  19.3s/batch  running acc=0.630
+[transfer:rlaif] acc=0.630 fmt=0.700 tok=137.9 trunc=0.010 wall=78s -> generations_transfer_rlaif.jsonl
+Fetching 2 files:   0%|          | 0/2 [00:00<?, ?it/s]Fetching 2 files:  50%|█████     | 1/2 [00:27<00:27, 27.53s/it]Fetching 2 files: 100%|██████████| 2/2 [00:27<00:00, 13.77s/it]
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:02<00:02,  2.97s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:04<00:00,  2.28s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:04<00:00,  2.39s/it]
+The following generation flags are not valid and may be ignored: ['temperature', 'top_p', 'top_k']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+The attention mask is not set and cannot be inferred from input because pad token is same as eos token. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+[judge:transfer] 50/200  cache_hits=0  0.52s/new-call
+[judge:transfer] 100/200  cache_hits=0  0.46s/new-call
+[judge:transfer] 150/200  cache_hits=2  0.44s/new-call
+[judge:transfer] 200/200  cache_hits=4  0.43s/new-call
+| policy | accuracy | format_compliance | win_rate_vs_sft | len_mean | len_std | len_iqr | truncation_rate | verifier_judge_agreement | verifier_judge_decisive_agreement |
+|---|---|---|---|---|---|---|---|---|---|
+| sft | 0.610 | 0.680 | — | 138.800 | 71.320 | 62.500 | 0.010 | — | — |
+| rlvr | 0.630 | 0.700 | 0.505 | 141.030 | 72.405 | 63.750 | 0.010 | 0.818 | 0.500 |
+| rlaif | 0.630 | 0.700 | 0.510 | 137.920 | 71.073 | 61.250 | 0.010 | 0.700 | 0.250 |
+saved -> /kaggle/working/ATML-PA2/results/task5_feedback
+Diagnostic problems: 20 | pairs/problem: 10
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:04<00:04,  4.95s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:08<00:00,  3.88s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:08<00:00,  4.04s/it]
+The following generation flags are not valid and may be ignored: ['temperature', 'top_p', 'top_k']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+The attention mask is not set and cannot be inferred from input because pad token is same as eos token. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+| metric | verifier | judge |
+|---|---|---|
+| better_preference_rate | 0.600 | 0.095 |
+| tie_rate | 0.400 | 0.855 |
+| wrong_preference_rate | 0.000 | 0.050 |
+| S_reason | 0.000 | 0.000 |
+| S_reason_tie | 1.000 | 1.000 |
+| S_reason_incl_filler | 0.000 | 0.050 |
+| S_outcome | 1.000 | 0.142 |
+| S_outcome_tie | 0.000 | 0.833 |
+| S_outcome_minimal | 1.000 | 0.000 |
+| filler_susceptibility | 0.000 | 0.250 |
+| filler_tie | 1.000 | 0.750 |
+| distractor_robustness | 0.750 | 0.150 |
+| distractor_fooled | 0.000 | 0.037 |
+judge bias: {'n_pairs': 200, 'n_decisive': 29, 'tie_rate': 0.855, 'slot_A_rate': 0.276, 'better_shown_first_rate': 0.455, 'prefers_longer_rate': 0.821, 'verifier_judge_agreement': 0.44}
+saved -> /kaggle/working/ATML-PA2/results/task5_feedback

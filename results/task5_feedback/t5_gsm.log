@@ -1,0 +1,40 @@
+GSM8K: 300 prompts | policies ['sft', 'rlvr', 'rlaif']
+[gen:sft] 2/10 batches  25.9s/batch  running acc=0.406
+[gen:sft] 4/10 batches  25.2s/batch  running acc=0.508
+[gen:sft] 6/10 batches  26.3s/batch  running acc=0.505
+[gen:sft] 8/10 batches  28.5s/batch  running acc=0.492
+[gen:sft] 10/10 batches  28.8s/batch  running acc=0.487
+[gsm:sft] acc=0.487 fmt=0.643 tok=263.6 trunc=0.013 wall=288s -> generations_gsm_sft.jsonl
+[gen:rlvr] 2/10 batches  28.6s/batch  running acc=0.500
+[gen:rlvr] 4/10 batches  27.7s/batch  running acc=0.562
+[gen:rlvr] 6/10 batches  28.3s/batch  running acc=0.542
+[gen:rlvr] 8/10 batches  30.3s/batch  running acc=0.512
+[gen:rlvr] 10/10 batches  30.1s/batch  running acc=0.503
+[gsm:rlvr] acc=0.503 fmt=0.667 tok=263.8 trunc=0.020 wall=301s -> generations_gsm_rlvr.jsonl
+[gen:rlaif] 2/10 batches  28.2s/batch  running acc=0.438
+[gen:rlaif] 4/10 batches  27.4s/batch  running acc=0.516
+[gen:rlaif] 6/10 batches  28.1s/batch  running acc=0.510
+[gen:rlaif] 8/10 batches  30.1s/batch  running acc=0.480
+[gen:rlaif] 10/10 batches  30.0s/batch  running acc=0.477
+[gsm:rlaif] acc=0.477 fmt=0.633 tok=262.7 trunc=0.013 wall=300s -> generations_gsm_rlaif.jsonl
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:02<00:02,  2.74s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:04<00:00,  2.13s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:04<00:00,  2.22s/it]
+The following generation flags are not valid and may be ignored: ['temperature', 'top_p', 'top_k']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+The attention mask is not set and cannot be inferred from input because pad token is same as eos token. As a consequence, you may observe unexpected behavior. Please pass your input's `attention_mask` to obtain reliable results.
+[judge:gsm] 50/600  cache_hits=0  0.60s/new-call
+[judge:gsm] 100/600  cache_hits=0  0.57s/new-call
+[judge:gsm] 150/600  cache_hits=0  0.59s/new-call
+[judge:gsm] 200/600  cache_hits=0  0.59s/new-call
+[judge:gsm] 250/600  cache_hits=0  0.60s/new-call
+[judge:gsm] 300/600  cache_hits=0  0.61s/new-call
+[judge:gsm] 350/600  cache_hits=5  0.61s/new-call
+[judge:gsm] 400/600  cache_hits=8  0.61s/new-call
+[judge:gsm] 450/600  cache_hits=9  0.60s/new-call
+[judge:gsm] 500/600  cache_hits=10  0.61s/new-call
+[judge:gsm] 550/600  cache_hits=14  0.61s/new-call
+[judge:gsm] 600/600  cache_hits=15  0.61s/new-call
+| policy | accuracy | format_compliance | win_rate_vs_sft | len_mean | len_std | len_iqr | truncation_rate | verifier_judge_agreement | verifier_judge_decisive_agreement |
+|---|---|---|---|---|---|---|---|---|---|
+| sft | 0.487 | 0.643 | — | 263.640 | 89.332 | 110.250 | 0.013 | — | — |
+| rlvr | 0.503 | 0.667 | 0.505 | 263.800 | 91.399 | 105.750 | 0.020 | 0.707 | 0.091 |
+| rlaif | 0.477 | 0.633 | 0.502 | 262.740 | 89.545 | 107.500 | 0.013 | 0.677 | 0.143 |
+saved -> /kaggle/working/ATML-PA2/results/task5_feedback

@@ -1,0 +1,81 @@
+{
+  "common": {
+    "base_model": "Qwen/Qwen2.5-1.5B-Instruct",
+    "dataset": "GSM8K",
+    "data_path": "data/gsm8k_eval.jsonl",
+    "data_sha256": "24f712750928c18c1a0a6849eebe97b3e01a6c0c0ebf2410d101a3df1872bf4a",
+    "n_examples": 300,
+    "max_rendered_prompt_tokens": 239,
+    "release_prompt_match_rate": 1.0,
+    "decoding": {
+      "do_sample": false,
+      "num_beams": 1,
+      "max_new_tokens": 512,
+      "max_prompt_length": 512,
+      "batch_size": 32,
+      "repetition_penalty": 1.0
+    }
+  },
+  "policies": {
+    "sft": {
+      "adapter": null,
+      "adapter_sha256": null,
+      "n": 300,
+      "accuracy": 0.4866666666666667,
+      "format_compliance": 0.6433333333333333,
+      "mean_response_tokens": 263.64,
+      "truncation_rate": 0.013333333333333334,
+      "generation_config": {
+        "do_sample": false,
+        "num_beams": 1,
+        "repetition_penalty": 1.0,
+        "no_repeat_ngram_size": 0,
+        "temperature": null,
+        "top_p": null,
+        "top_k": null
+      },
+      "wall_s": 288.35018244599996,
+      "peak_vram_gib": 3.6861624717712402
+    },
+    "rlvr": {
+      "adapter": "checkpoints/rlvr_policy",
+      "adapter_sha256": "b309564b45c0268e4e5ffb0db5cb100e557a2c407a68ea3fa3de91fe964d92c8",
+      "n": 300,
+      "accuracy": 0.5033333333333333,
+      "format_compliance": 0.6666666666666666,
+      "mean_response_tokens": 263.8,
+      "truncation_rate": 0.02,
+      "generation_config": {
+        "do_sample": false,
+        "num_beams": 1,
+        "repetition_penalty": 1.0,
+        "no_repeat_ngram_size": 0,
+        "temperature": null,
+        "top_p": null,
+        "top_k": null
+      },
+      "wall_s": 301.463562465,
+      "peak_vram_gib": 3.6913962364196777
+    },
+    "rlaif": {
+      "adapter": "checkpoints/rlaif_policy",
+      "adapter_sha256": "e5a0eaacb3ce32a73fe86fd6a823be21c60a460eee8682493e5cc0f2e1019713",
+      "n": 300,
+      "accuracy": 0.4766666666666667,
+      "format_compliance": 0.6333333333333333,
+      "mean_response_tokens": 262.74,
+      "truncation_rate": 0.013333333333333334,
+      "generation_config": {
+        "do_sample": false,
+        "num_beams": 1,
+        "repetition_penalty": 1.0,
+        "no_repeat_ngram_size": 0,
+        "temperature": null,
+        "top_p": null,
+        "top_k": null
+      },
+      "wall_s": 300.45751790400004,
+      "peak_vram_gib": 3.6913962364196777
+    }
+  }
+}

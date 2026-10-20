@@ -1,0 +1,23 @@
+GSM8K: 300 prompts | policies ['sft', 'rlvr', 'rlaif']
+[skip] sft: generations_gsm_sft.jsonl matches the current spec
+[skip] rlvr: generations_gsm_rlvr.jsonl matches the current spec
+[skip] rlaif: generations_gsm_rlaif.jsonl matches the current spec
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:03<00:03,  3.74s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:05<00:00,  2.73s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:05<00:00,  2.88s/it]
+[judge:gsm] 50/600  cache_hits=11  0.00s/new-call
+[judge:gsm] 100/600  cache_hits=20  0.00s/new-call
+[judge:gsm] 150/600  cache_hits=25  0.00s/new-call
+[judge:gsm] 200/600  cache_hits=27  0.01s/new-call
+[judge:gsm] 250/600  cache_hits=36  0.01s/new-call
+[judge:gsm] 300/600  cache_hits=41  0.01s/new-call
+[judge:gsm] 350/600  cache_hits=48  0.01s/new-call
+[judge:gsm] 400/600  cache_hits=54  0.01s/new-call
+[judge:gsm] 450/600  cache_hits=58  0.01s/new-call
+[judge:gsm] 500/600  cache_hits=62  0.01s/new-call
+[judge:gsm] 550/600  cache_hits=70  0.01s/new-call
+[judge:gsm] 600/600  cache_hits=72  0.01s/new-call
+| policy | accuracy | format_compliance | win_rate_vs_sft | len_mean | len_std | len_iqr | truncation_rate | verifier_judge_agreement | verifier_judge_decisive_agreement |
+|---|---|---|---|---|---|---|---|---|---|
+| sft | 0.487 | 0.643 | — | 263.640 | 89.332 | 110.250 | 0.013 | — | — |
+| rlvr | 0.503 | 0.667 | 0.505 | 263.800 | 91.399 | 105.750 | 0.020 | 0.707 | 0.091 |
+| rlaif | 0.477 | 0.633 | 0.502 | 262.740 | 89.545 | 107.500 | 0.013 | 0.677 | 0.143 |
+saved -> /kaggle/working/ATML-PA2/results/task5_feedback

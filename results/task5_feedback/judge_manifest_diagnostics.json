@@ -1,0 +1,10 @@
+{
+  "judge_model": "Qwen/Qwen2.5-3B-Instruct",
+  "quantized_4bit": true,
+  "max_new_tokens": 4,
+  "do_sample": false,
+  "cache": "judge_cache_diagnostics.json",
+  "n_pairs": 200,
+  "n_cache_hits": 200,
+  "wall_s_this_run": 0.4713802549999855
+}

@@ -1,0 +1,9 @@
+policy,verifier_outcome,judge_prefers_policy,judge_tie,judge_prefers_sft,n,judge_win_rate
+rlvr,policy_only_correct,1,7,0,8,0.5625
+rlvr,sft_only_correct,0,3,0,3,0.5
+rlvr,both_correct,0,14,0,14,0.5
+rlvr,both_wrong,2,14,0,16,0.5625
+rlaif,policy_only_correct,0,2,0,2,0.5
+rlaif,sft_only_correct,0,4,1,5,0.4
+rlaif,both_correct,0,7,0,7,0.5
+rlaif,both_wrong,3,13,1,17,0.5588235294117647

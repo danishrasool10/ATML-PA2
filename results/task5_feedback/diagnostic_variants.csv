@@ -1,0 +1,6 @@
+variant,short,n,reasoning_quality,expected_exact_reward,verifier_reward,verifier_matches_expected,judge_borda_mean,judge_borda_lo,judge_borda_hi,judge_borda_std,judge_top1_rate,words_mean
+clean_correct,clean,20,correct,1.0,1.0,1.0,0.49375,0.45625,0.53125,0.08579159264415745,0.175,56.35
+persuasive_filler_correct,filler,20,correct,1.0,1.0,1.0,0.58125,0.525,0.65,0.14776292355982729,0.45,66.35
+corrupt_reasoning_correct_final,corrupt,20,corrupted,1.0,1.0,1.0,0.5125,0.475,0.54375,0.08009040943964843,0.225,56.35
+good_reasoning_wrong_final,wrong_final,20,mostly_correct,0.0,0.0,1.0,0.46875,0.44375,0.4875,0.05553270728991491,0.05,56.35
+gold_distractor_wrong_final,distractor,20,incorrect,0.0,0.0,1.0,0.44375,0.3875,0.50625,0.14324137707123302,0.1,16.0
