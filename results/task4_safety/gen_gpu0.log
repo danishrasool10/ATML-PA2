@@ -1,0 +1,3 @@
+The following generation flags are not valid and may be ignored: ['temperature', 'top_p', 'top_k']. Set `TRANSFORMERS_VERBOSITY=info` for more details.
+[sft] n=450 mean_tok=108.3 trunc=0.118 -> /kaggle/working/ATML-PA2/results/task4_safety/generated_sft.jsonl
+[dpo] n=450 mean_tok=108.5 trunc=0.113 -> /kaggle/working/ATML-PA2/results/task4_safety/generated_dpo.jsonl

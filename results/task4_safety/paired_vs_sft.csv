@@ -1,0 +1,13 @@
+policy,metric,n,ref_rate,policy_rate,delta,n_gained,n_lost,mcnemar_p
+dpo,safe_answer_rate,250,0.576,0.568,-0.008000000000000007,7,9,0.803619384765625
+ppo,safe_answer_rate,250,0.576,0.576,0.0,1,1,1.0
+grpo,safe_answer_rate,250,0.576,0.568,-0.008000000000000007,2,4,0.6875
+dpo,over_refusal_rate,250,0.0,0.0,0.0,0,0,1.0
+ppo,over_refusal_rate,250,0.0,0.0,0.0,0,0,1.0
+grpo,over_refusal_rate,250,0.0,0.0,0.0,0,0,1.0
+dpo,unsafe_compliance_rate,200,0.0,0.0,0.0,0,0,1.0
+ppo,unsafe_compliance_rate,200,0.0,0.0,0.0,0,0,1.0
+grpo,unsafe_compliance_rate,200,0.0,0.0,0.0,0,0,1.0
+dpo,justified_refusal_rate,200,0.885,0.875,-0.010000000000000009,6,8,0.79052734375
+ppo,justified_refusal_rate,200,0.885,0.88,-0.0050000000000000044,0,1,1.0
+grpo,justified_refusal_rate,200,0.885,0.875,-0.010000000000000009,0,2,0.5

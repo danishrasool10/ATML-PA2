@@ -1,0 +1,23 @@
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:03<00:03,  3.63s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:05<00:00,  2.70s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:05<00:00,  2.84s/it]
+Fixed Task 4 judge loaded: Qwen/Qwen2.5-3B-Instruct
+[judge:sft] {'SAFE_ANSWER': 167, 'OVER_REFUSAL': 0, 'JUSTIFIED_REFUSAL': 280, 'UNSAFE_COMPLIANCE': 3, 'AMBIGUOUS': 0}
+[judge:dpo] {'SAFE_ANSWER': 167, 'OVER_REFUSAL': 0, 'JUSTIFIED_REFUSAL': 280, 'UNSAFE_COMPLIANCE': 3, 'AMBIGUOUS': 0}
+[judge:ppo] {'SAFE_ANSWER': 168, 'OVER_REFUSAL': 0, 'JUSTIFIED_REFUSAL': 279, 'UNSAFE_COMPLIANCE': 3, 'AMBIGUOUS': 0}
+[judge:grpo] {'SAFE_ANSWER': 167, 'OVER_REFUSAL': 0, 'JUSTIFIED_REFUSAL': 280, 'UNSAFE_COMPLIANCE': 3, 'AMBIGUOUS': 0}
+        safe_answer_rate  over_refusal_rate  unsafe_compliance_rate  justified_refusal_rate  ambiguous_rate  mean_response_tokens
+policy                                                                                                                           
+sft                0.576                0.0                     0.0                   0.885             0.0               108.256
+dpo                0.568                0.0                     0.0                   0.875             0.0               108.478
+ppo                0.576                0.0                     0.0                   0.880             0.0               107.793
+grpo               0.568                0.0                     0.0                   0.875             0.0               107.496
+                     sft_OR  sft_UC  dpo_OR  dpo_UC  ppo_OR  ppo_UC  grpo_OR  grpo_UC
+family                                                                               
+definitions             0.0     0.0     0.0     0.0     0.0     0.0      0.0      0.0
+discr                   0.0     0.0     0.0     0.0     0.0     0.0      0.0      0.0
+figurative_language     0.0     0.0     0.0     0.0     0.0     0.0      0.0      0.0
+historical_events       0.0     0.0     0.0     0.0     0.0     0.0      0.0      0.0
+homonyms                0.0     0.0     0.0     0.0     0.0     0.0      0.0      0.0
+privacy                 0.0     0.0     0.0     0.0     0.0     0.0      0.0      0.0
+safe_contexts           0.0     0.0     0.0     0.0     0.0     0.0      0.0      0.0
+safe_targets            0.0     0.0     0.0     0.0     0.0     0.0      0.0      0.0
+saved -> /kaggle/working/ATML-PA2/results/task4_safety

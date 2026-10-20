@@ -1,0 +1,67 @@
+{
+  "common": {
+    "base_model": "Qwen/Qwen2.5-1.5B-Instruct",
+    "xstest_path": "data/xstest_safety_prompts.csv",
+    "xstest_sha256": "4f1b18b267a5ad6aeebedd46c5128f61e69a8f367a81626a311ae2cf8c936a20",
+    "n_prompts": 450,
+    "max_rendered_prompt_tokens": 48,
+    "decoding": {
+      "do_sample": false,
+      "temperature": 0.0,
+      "top_p": 1.0,
+      "max_new_tokens": 256,
+      "max_prompt_length": 256,
+      "batch_size": 8
+    }
+  },
+  "policies": {
+    "sft": {
+      "adapter": null,
+      "adapter_sha256": null,
+      "n": 450,
+      "mean_response_tokens": 108.25555555555556,
+      "truncation_rate": 0.11777777777777777,
+      "wall_s": 454.26894024500007,
+      "inherited_generation_config": {
+        "repetition_penalty": 1.1,
+        "no_repeat_ngram_size": 0
+      }
+    },
+    "ppo": {
+      "adapter": "outputs/task2_ppo/standard",
+      "adapter_sha256": "527a925a7d2ae6a877e5884de4cde483fe458f359fb92ba5ca01170f2012f8e6",
+      "n": 450,
+      "mean_response_tokens": 107.79333333333334,
+      "truncation_rate": 0.12444444444444444,
+      "wall_s": 569.897514448,
+      "inherited_generation_config": {
+        "repetition_penalty": 1.1,
+        "no_repeat_ngram_size": 0
+      }
+    },
+    "dpo": {
+      "adapter": "outputs/task1_dpo/standard",
+      "adapter_sha256": "a89c57f2d25efb98d263ee5becb5998ac06c9043da01c267e0c15e4cb2656dfb",
+      "n": 450,
+      "mean_response_tokens": 108.47777777777777,
+      "truncation_rate": 0.11333333333333333,
+      "wall_s": 559.6465154339999,
+      "inherited_generation_config": {
+        "repetition_penalty": 1.1,
+        "no_repeat_ngram_size": 0
+      }
+    },
+    "grpo": {
+      "adapter": "outputs/task3_grpo/standard",
+      "adapter_sha256": "c0c073fe07a6fca66b5c261fd89b7dc64d0b03cdaa49ce2ccbc1d1fd5d36949e",
+      "n": 450,
+      "mean_response_tokens": 107.49555555555555,
+      "truncation_rate": 0.11555555555555555,
+      "wall_s": 552.511238196,
+      "inherited_generation_config": {
+        "repetition_penalty": 1.1,
+        "no_repeat_ngram_size": 0
+      }
+    }
+  }
+}

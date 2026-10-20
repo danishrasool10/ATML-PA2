@@ -379,7 +379,7 @@ def main():
     ax.set_xlabel(r"Paired held-out $\Delta$reward, Dr. GRPO − GRPO")
     ax.set_ylabel("Prompts")
     ax.legend(loc="upper left", fontsize=6.8)
-    ax.set_title("(b) Paired differences: RM noise vs. divergence", loc="left")
+    ax.set_title("(b) Paired differences: identical vs. diverged text", loc="left")
     fig.tight_layout()
     save(fig, out, "fig5_heldout_normalization")
 
